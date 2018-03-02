@@ -6,9 +6,6 @@
     "lint": "eslint ./src",
     "test-ci": "jest --coverage && cat ./coverage/lcov.info | coveralls"
   },
-  "dependencies": {
-    "joi": "^13.1.2"
-  },
   "devDependencies": {
     "lerna": "^3.0.0-alpha.1",
     "coveralls": "^3.0.0",
