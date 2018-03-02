@@ -1,22 +1,27 @@
 {
   "name": "@sapphirejs/ioc",
   "version": "0.0.9",
+  "description": "IOC (Inversion of Control) Container for Sapphire Framework",
+  "license": "MIT",
+  "author": "Aleksander Koko <aleksanderkoko@gmail.com>",
   "keywords": [
-    "IOC"
+    "ioc",
+    "inversion of control",
+    "container",
+    "dependency injection",
+    "sapphire",
+    "framework"
   ],
+  "main": "index.js",
+  "engines": {
+    "node": ">= 6.0.0"
+  },
   "scripts": {
     "test": "jest",
     "lint": "eslint ./src",
     "test-ci": "jest --coverage && cat ./coverage/lcov.info | coveralls"
   },
-  "engines": {
-    "node": ">= 6.0.0"
-  },
   "publishConfig": {
     "access": "public"
-  },
-  "description": "Simple IOC container",
-  "main": "index.js",
-  "author": "Aleksander Koko aleksanderkoko@gmail.com",
-  "license": "MIT"
+  }
 }

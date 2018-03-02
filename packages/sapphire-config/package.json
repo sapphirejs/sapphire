@@ -1,17 +1,19 @@
 {
   "name": "@sapphirejs/config",
   "version": "0.0.9",
+  "description": "A Config implementation for sapphire-framework",
+  "license": "MIT",
+  "author": "Aleksander Koko <aleksanderkoko@gmail.com>",
   "keywords": [
-    "Config Sapphire Framework"
+    "config",
+    "sapphire",
+    "framework"
   ],
+  "main": "index.js",
   "engines": {
     "node": ">= 6.0.0"
   },
   "publishConfig": {
     "access": "public"
-  },
-  "description": "A Config implementation for sapphire-framework",
-  "main": "index.js",
-  "author": "Aleksander Koko aleksanderkoko@gmail.com",
-  "license": "MIT"
+  }
 }
