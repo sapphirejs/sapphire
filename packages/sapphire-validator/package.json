@@ -1,0 +1,23 @@
+{
+  "name": "@sapphire-framework/validator",
+  "version": "0.1.0",
+  "description": "Schema and Middleware Validator for Sapphire Framework",
+  "license": "MIT",
+  "author": "Fadion Dashi <jonidashi@gmail.com>",
+  "keywords": [
+    "validator",
+    "middleware",
+    "sapphire",
+    "framework"
+  ],
+  "main": "index.js",
+  "engines": {
+    "node": ">= 6.0.0"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "dependencies": {
+    "joi": "^13.1.2"
+  }
+}
