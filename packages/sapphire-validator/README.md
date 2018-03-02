@@ -87,7 +87,7 @@ const { ValidatorMiddleware } = require('sapphire-validator')
 
 class UserValidator extends ValidatorMiddleware {
   fields(req) {
-    return Object.assign({}, req.body, req.params)
+    return {...req.body, ...req.params}
   }
 
   /* rules omited for brevity */

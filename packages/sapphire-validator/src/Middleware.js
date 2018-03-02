@@ -30,7 +30,7 @@ class Middleware {
    * @returns {Object}
    */
   fields(req) {
-    return Object.assign({}, req.body, req.query)
+    return {...req.body, ...req.query}
   }
 }
 
