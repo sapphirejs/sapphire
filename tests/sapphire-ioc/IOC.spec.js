@@ -1,7 +1,7 @@
 const {
   IOC,
   ServiceNotFound
-} = require('sapphire-ioc')
+} = require('../../packages/sapphire-ioc')
 
 let { test, expect} = global
 
