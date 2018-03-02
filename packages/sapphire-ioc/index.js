@@ -1,6 +1,6 @@
-const IOC = require('./src/IOC')
-const iocResolver = require('./src/IOCResolver')
-const ServiceNotFound = require('./src/Errors/ServiceNotFound')
+const IOC = require('./lib/IOC')
+const iocResolver = require('./lib/IOCResolver')
+const ServiceNotFound = require('./lib/Errors/ServiceNotFound')
 
 module.exports = {
   IOC,
