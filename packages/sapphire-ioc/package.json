@@ -1,6 +1,6 @@
 {
   "name": "@sapphirejs/ioc",
-  "version": "0.0.9",
+  "version": "0.0.10",
   "description": "IOC (Inversion of Control) Container for Sapphire Framework",
   "license": "MIT",
   "author": "Aleksander Koko <aleksanderkoko@gmail.com>",

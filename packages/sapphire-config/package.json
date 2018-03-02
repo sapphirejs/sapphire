@@ -1,6 +1,6 @@
 {
   "name": "@sapphirejs/config",
-  "version": "0.0.9",
+  "version": "0.0.10",
   "description": "A Config implementation for sapphire-framework",
   "license": "MIT",
   "author": "Aleksander Koko <aleksanderkoko@gmail.com>",
