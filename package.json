@@ -1,0 +1,16 @@
+{
+  "name": "sapphire-core",
+	"version": "0.0.1",
+	"scripts": {
+    "test": "jest",
+    "lint": "eslint ./src",
+    "test-ci": "jest --coverage && cat ./coverage/lcov.info | coveralls"
+  },
+
+	"devDependencies": {
+		"lerna": "^3.0.0-alpha.1",
+		"coveralls": "^3.0.0",
+    "eslint": "^4.14.0",
+    "jest": "^22.0.4"
+	}
+}

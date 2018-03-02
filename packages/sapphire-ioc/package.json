@@ -1,0 +1,22 @@
+{
+  "name": "@sapphire-framework/ioc",
+  "version": "0.0.9",
+  "keywords": [
+    "IOC"
+  ],
+  "scripts": {
+    "test": "jest",
+    "lint": "eslint ./src",
+    "test-ci": "jest --coverage && cat ./coverage/lcov.info | coveralls"
+  },
+  "engines": {
+    "node": ">= 6.0.0"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "description": "Simple IOC container",
+  "main": "index.js",
+  "author": "Aleksander Koko aleksanderkoko@gmail.com",
+  "license": "MIT"
+}
