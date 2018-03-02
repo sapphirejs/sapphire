@@ -1,5 +1,5 @@
 {
-  "name": "@sapphire-framework/validator",
+  "name": "@sapphirejs/validator",
   "version": "0.1.0",
   "description": "Schema and Middleware Validator for Sapphire Framework",
   "license": "MIT",

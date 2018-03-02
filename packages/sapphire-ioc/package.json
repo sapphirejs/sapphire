@@ -1,5 +1,5 @@
 {
-  "name": "@sapphire-framework/ioc",
+  "name": "@sapphirejs/ioc",
   "version": "0.0.9",
   "keywords": [
     "IOC"
