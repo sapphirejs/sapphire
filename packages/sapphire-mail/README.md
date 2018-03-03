@@ -7,6 +7,8 @@ A fluent email sender built as a thin wrapper on top of [nodemailer](https://git
 We'll start with an exhaustive example that includes pretty much every option.
 
 ```javascript
+const Mail = require('@sapphirejs/mail')
+
 let config = {/* nodemailer configuration */}
 let mail = new Mail(config)
 mail.from('from@domain.com')
