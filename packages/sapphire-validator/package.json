@@ -1,6 +1,11 @@
 {
   "name": "@sapphirejs/validator",
   "version": "0.0.10",
+  "scripts": {
+    "test": "jest",
+    "lint": "eslint ./src",
+    "test-ci": "jest --coverage && cat ./coverage/lcov.info | coveralls"
+  },
   "description": "Schema and Middleware Validator for Sapphire Framework",
   "license": "MIT",
   "author": "Fadion Dashi <jonidashi@gmail.com>",
@@ -19,6 +24,11 @@
     "access": "public"
   },
   "dependencies": {
+    "@sapphirejs/config": "^0.0.10",
     "joi": "^13.1.2"
+  },
+  "devDependencies": {
+    "coveralls": "^3.0.0",
+    "jest": "^22.0.4"
   }
 }

@@ -1,20 +1,34 @@
+const fs = require('fs')
+const BadArguments = require('./BadArguments')
+
 class Config {
-  constructor(configFolder = 'config', preload = false) {
+  constructor(configFolder = '/config', preload = false) {
+    configFolder = process.cwd() + configFolder
+
+    if(!this._validateConfigFolder(configFolder))
+      throw new BadArguments("Bad config folder argument")
+
+    if(!this._validatePreload(preload))
+      throw new BadArguments("Bad preload parameter. It should be an boolean value")
+
     this._cache = {}
     this._configFolder = configFolder
+
+    if(preload === true)
+      this._preload()
   }
 
-  get(key) {
+  get(key = '') {
     const arrayOfKeys = key.trim().split('.')
 
-    if(arrayOfKeys.legth === 0)
+    if(arrayOfKeys[0] === '')
       return null
 
     const keyFromCache = this._iterate(arrayOfKeys, this._cache)
     if(keyFromCache)
       return keyFromCache
 
-    const configFile = require(this._configFolder + arrayOfKeys[0])
+    const configFile = require(this._configFolder + '/' + arrayOfKeys[0])
     const keysForConfig = [...arrayOfKeys]
     const keyFromConfig = this._iterate(keysForConfig.splice(1), configFile)
     if(!keyFromConfig)
@@ -36,6 +50,19 @@ class Config {
 
   _preload() {
 
+  }
+
+  _validatePreload(preload) {
+    return ((typeof preload) === 'boolean')
+  }
+
+  _validateConfigFolder(configFolder) {
+    try{
+      fs.lstatSync(configFolder).isDirectory()
+    }catch(e){
+      return false
+    }
+    return true
   }
 
   _cacheConfig(key, value) {

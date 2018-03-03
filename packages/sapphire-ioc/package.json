@@ -23,5 +23,12 @@
   },
   "publishConfig": {
     "access": "public"
+  },
+  "dependencies": {
+    "@sapphirejs/config": "^0.0.10"
+  },
+  "devDependencies": {
+    "coveralls": "^3.0.0",
+    "jest": "^22.0.4"
   }
 }

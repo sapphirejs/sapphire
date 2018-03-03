@@ -1,6 +1,11 @@
 {
   "name": "@sapphirejs/config",
   "version": "0.0.10",
+  "scripts": {
+    "test": "jest",
+    "lint": "eslint ./src",
+    "test-ci": "jest --coverage && cat ./coverage/lcov.info | coveralls"
+  },
   "description": "A Config implementation for sapphire-framework",
   "license": "MIT",
   "author": "Aleksander Koko <aleksanderkoko@gmail.com>",
@@ -15,5 +20,9 @@
   },
   "publishConfig": {
     "access": "public"
+  },
+  "devDependencies": {
+    "coveralls": "^3.0.0",
+    "jest": "^22.0.4"
   }
 }

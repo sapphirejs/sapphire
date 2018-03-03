@@ -1,7 +1,7 @@
-const IOC = require('./lib/Config')
+const Config = require('./lib/Config')
 const ConfigServiceProvider = require('./lib/ConfigServiceProvider')
 
 module.exports = {
-  IOC,
+  Config,
   ConfigServiceProvider
 }

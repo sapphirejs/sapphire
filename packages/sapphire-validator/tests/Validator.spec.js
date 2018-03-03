@@ -1,4 +1,4 @@
-const { rule, Validator, ValidatorMiddleware } = require('../../packages/sapphire-validator')
+const { rule, Validator, ValidatorMiddleware } = require('../index')
 const { test, expect } = global
 
 let rules = {
