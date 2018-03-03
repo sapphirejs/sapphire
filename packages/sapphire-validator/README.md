@@ -7,7 +7,7 @@ A very thin wrapper on top of the fantastic [Joi](https://github.com/hapijs/joi)
 Schemas are plain object literals with the field name as the key and a set of chained functions to declare validation rules. Let's see an example:
 
 ```javascript
-const { rule, Validator } = require('sapphire-validator')
+const { rule, Validator } = require('@sapphirejs/validator')
 
 let validator = new Validator({
     name: 'John',
