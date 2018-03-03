@@ -1,0 +1,32 @@
+{
+  "name": "@sapphirejs/mail",
+  "version": "0.0.10",
+  "description": "Fluent Mail Client for Sapphire Framework",
+  "license": "MIT",
+  "author": "Fadion Dashi <jonidashi@gmail.com>",
+  "keywords": [
+    "mail",
+    "client",
+    "smtp",
+    "sapphire",
+    "framework"
+  ],
+  "main": "index.js",
+  "engines": {
+    "node": ">= 6.0.0"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "test": "jest",
+    "lint": "eslint ./src",
+    "test-ci": "jest --coverage && cat ./coverage/lcov.info | coveralls"
+  },
+  "dependencies": {
+    "nodemailer": "^4.6.0"
+  },
+  "devDependencies": {
+    "jest": "^22.4.2"
+  }
+}
