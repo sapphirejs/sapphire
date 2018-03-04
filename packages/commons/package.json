@@ -1,28 +1,25 @@
 {
-  "name": "@sapphirejs/config",
+  "name": "@sapphirejs/commons",
   "version": "0.0.10",
-  "description": "A Config implementation for sapphire-framework",
+  "description": "Common utilities that are used throughout Sapphire packages",
   "license": "MIT",
-  "author": "Aleksander Koko <aleksanderkoko@gmail.com>",
+  "author": "Aleksander Koko <aleksanderkoko@gmail>",
   "keywords": [
-    "config",
     "sapphire",
-    "framework"
+    "framework",
+    "commons"
   ],
   "main": "index.js",
   "engines": {
     "node": ">= 6.0.0"
   },
+  "publishConfig": {
+    "access": "public"
+  },
   "scripts": {
     "test": "jest",
     "lint": "eslint ./src",
     "test-ci": "jest --coverage && cat ./coverage/lcov.info | coveralls"
-  },
-  "publishConfig": {
-    "access": "public"
-  },
-  "dependencies": {
-    "@sapphirejs/commons": "^0.0.10"
   },
   "devDependencies": {
     "coveralls": "^3.0.0",

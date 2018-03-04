@@ -1,15 +1,15 @@
 const fs = require('fs')
-const BadArguments = require('./BadArguments')
+const ConfigBadParameters = require('./ConfigBadParameters')
 
 class Config {
   constructor(configFolder = '/config', preload = false) {
     configFolder = process.cwd() + configFolder
 
     if(!this._validateConfigFolder(configFolder))
-      throw new BadArguments("Bad config folder argument")
+      throw new ConfigBadParameters("Bad config folder argument")
 
     if(!this._validatePreload(preload))
-      throw new BadArguments("Bad preload parameter. It should be an boolean value")
+      throw new ConfigBadParameters("Bad preload parameter. It should be an boolean value")
 
     this._cache = {}
     this._configFolder = configFolder
