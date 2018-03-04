@@ -1,5 +1,5 @@
-const Config = require('./lib/Config')
-const ConfigServiceProvider = require('./lib/ConfigServiceProvider')
+const Config = require('./lib/config')
+const ConfigServiceProvider = require('./lib/config-service-provider')
 
 module.exports = {
   Config,

@@ -1,6 +1,5 @@
-const ServiceNotFound = require('./Errors/ServiceNotFound')
-const Service = require('./Service')
-
+const ServiceNotFound = require('./errors/service-not-found')
+const Service = require('./service')
 
 class IOC {
   constructor() {

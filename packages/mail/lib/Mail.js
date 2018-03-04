@@ -1,6 +1,6 @@
 const nodemailer = require('nodemailer')
-const MailSendingFailed = require('./errors/MailSendingFailed')
-const MissingMailParams = require('./errors/MissingMailParams')
+const MailSendingFailed = require('./errors/mail-sending-failed')
+const MissingMailParams = require('./errors/missing-mail-params')
 
 /**
  * Mail class.

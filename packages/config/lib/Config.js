@@ -1,5 +1,5 @@
 const fs = require('fs')
-const ConfigBadParameters = require('./ConfigBadParameters')
+const ConfigBadParameters = require('./config-bad-parameters')
 
 class Config {
   constructor(configFolder = '/config', preload = false) {

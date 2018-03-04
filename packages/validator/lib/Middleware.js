@@ -1,4 +1,4 @@
-const Validator = require('./Validator')
+const Validator = require('./validator')
 
 /**
  * Middleware class.

@@ -1,5 +1,5 @@
-const Validator = require('./lib/Validator')
-const Middleware = require('./lib/Middleware')
+const Validator = require('./lib/validator')
+const Middleware = require('./lib/middleware')
 const Joi = require('joi')
 
 module.exports = {

@@ -1,3 +1,3 @@
-const Config = require('./Config')
+const Config = require('./config')
 
 module.exports = ioc => ioc.singleton(Config, () => new Config('config'))

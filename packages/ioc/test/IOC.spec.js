@@ -6,8 +6,8 @@ const {
 let { test, expect} = global
 
 // Import helpers
-const SimpleClass = require('./helpers/SimpleClass')
-const FakeConfig = require('./helpers/FakeConfig')
+const SimpleClass = require('./helpers/simple-class')
+const FakeConfig = require('./helpers/fake-config')
 
 test('Add a Service and retrieve it', () => {
   let ioc = new IOC()

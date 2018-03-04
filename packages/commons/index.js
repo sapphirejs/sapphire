@@ -1,4 +1,4 @@
-const BadArguments = require('./lib/BadArguments')
+const BadArguments = require('./lib/bad-arguments')
 
 module.exports = {
   BadArguments

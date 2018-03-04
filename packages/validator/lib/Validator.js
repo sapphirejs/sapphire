@@ -7,8 +7,8 @@ const Joi = require('joi')
 */
 class Validator {
   /**
-   * @param {Object} fields 
-   * @param {Object} schema 
+   * @param {Object} fields
+   * @param {Object} schema
    */
   constructor(fields, schema) {
     let { error } = Joi.validate(fields, schema, { abortEarly: false })
@@ -19,7 +19,7 @@ class Validator {
   /**
    * Transfors Joi's error object into a
    * simplified form.
-   * @param {Error} error 
+   * @param {Error} error
    */
   _prepareErrors(error) {
     if (!error) return
