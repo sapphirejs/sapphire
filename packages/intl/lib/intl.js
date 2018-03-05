@@ -6,12 +6,13 @@ const InvalidLocaleMessage = require('./errors/invalid-locale-message')
 
 /**
 * Internationalization package.
+
 * @module sapphirejs/intl
 */
 class Intl {
   /**
-   * @param {Object} locales 
-   * @param {string} locale 
+   * @param {Object} locales
+   * @param {string} locale
    * @throws {MissingLocale} When locale doesn't exist
    */
   constructor(locales, locale) {
@@ -24,8 +25,9 @@ class Intl {
   /**
    * Formats a locale string with a given
    * key path.
-   * @param {string} path 
-   * @param {Object} data 
+   *
+   * @param {string} path
+   * @param {Object} data
    * @returns {string}
    * @throws {MissingLocale} When locale doesn't exist
    * @throws {MissingLocaleKey} When locale key doesn't exist
@@ -41,7 +43,7 @@ class Intl {
     let localePath = `${locale}.${path}`
     // objectPath gets values from deeply nested object keys.
     let value = objectPath.get(this._locales, localePath)
-    
+
     if (!value)
       throw new MissingLocaleKey(`Locale key '${path}' not found for locale '${locale}'`)
 
@@ -55,6 +57,7 @@ class Intl {
 
   /**
    * Returns the current locale.
+   *
    * @returns {string}
    */
   get locale() {
@@ -71,7 +74,8 @@ class Intl {
   /**
    * Sets the locale temporarily for a single
    * format call.
-   * @param {string} locale 
+   *
+   * @param {string} locale
    * @returns {Intl}
    */
   in(locale) {
@@ -81,7 +85,8 @@ class Intl {
 
   /**
    * Checks if the locale exists.
-   * @param {string} locale 
+   *
+   * @param {string} locale
    * @throws {MissingLocale} When locale doesn't exist
    */
   _localeExists(locale) {
