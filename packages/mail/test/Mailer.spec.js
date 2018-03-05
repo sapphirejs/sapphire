@@ -1,107 +1,124 @@
-const { Mail, MailSendingFailed, MissingMailParams } = require('../index')
+const { Mail, Message, Transport, MailSendingFailed, MissingMailParams } = require('../index')
 
-test('builds all headers', () => {
-  let mail = new Mail({})
-  mail.from('from@domain.com')
-    .replyTo('from@domain.com')
-    .to('to@domain.com')
-    .cc('cc@domain.com')
-    .bcc('bcc@domain.com')
-    .subject('Testing')
-    .text('Email body')
-    .html('<p>Email body</p>')
-    .attachment({ filename: 'file.txt', content: 'File' })
-    .header('my-key', '123')
-    .alternatives('text/x-web-markdown', '**Email body**')
-    .priority(Mail.priority.low)
+class MockTransport {
+  constructor(shouldErr = false) {
+    this._shouldErr = shouldErr
+  }
 
-  expect(mail._message).toEqual({
-    from: 'from@domain.com',
-    replyTo: 'from@domain.com',
-    to: ['to@domain.com'],
-    cc: ['cc@domain.com'],
-    bcc: ['bcc@domain.com'],
-    subject: 'Testing',
-    text: 'Email body',
-    html: '<p>Email body</p>',
-    attachments: [{ filename: 'file.txt', content: 'File' }],
-    headers: { 'my-key': { value: '123', prepared: false } },
-    alternatives: [{ contentType: 'text/x-web-markdown', content: '**Email body**' }],
-    priority: 'low'
+  send(config, message) {
+    return new Promise((resolve, reject) => {
+      if (this._shouldErr) reject('error')
+      // Transport isn't supposed to return the message
+      // object, but a mail result. Doing this only for
+      // testing purposes.
+      resolve(message)
+    })
+  }
+}
+
+describe('message', () => {
+  test('builds all headers', () => {
+    const message = new Message()
+    message.from('from@domain.com')
+      .replyTo('from@domain.com')
+      .to('to@domain.com')
+      .cc('cc@domain.com')
+      .bcc('bcc@domain.com')
+      .subject('Testing')
+      .attach({ filename: 'file.txt', content: 'File' })
+      .header('my-key', '123')
+      .alternative('text/x-web-markdown', '**Email body**')
+      .priority('low')
+
+    expect(message.message).toEqual({
+      from: 'from@domain.com',
+      replyTo: 'from@domain.com',
+      to: ['to@domain.com'],
+      cc: ['cc@domain.com'],
+      bcc: ['bcc@domain.com'],
+      subject: 'Testing',
+      attachments: [{ filename: 'file.txt', content: 'File' }],
+      headers: { 'my-key': { value: '123', prepared: false } },
+      alternatives: [{ contentType: 'text/x-web-markdown', content: '**Email body**' }],
+      priority: 'low'
+    })
+  })
+
+  test('supports multiple receivers', () => {
+    const message = new Message()
+    message.to('one@domain.com').to('two@domain.com')
+
+    expect(message.message.to).toEqual(['one@domain.com', 'two@domain.com'])
+  })
+
+  test('supports name and email combination in receiver', () => {
+    const message = new Message()
+    message.to('John Smith', 'js@domain.com')
+
+    expect(message.message.to).toEqual([{
+      name: 'John Smith',
+      address: 'js@domain.com'
+    }])
   })
 })
 
-test('supports multiple receivers', () => {
-  let mail = new Mail({})
-  mail.to('one@domain.com').to('two@domain.com')
+describe('mail', () => {
+  test("sets 'from' and 'replyTo' headers from config", async () => {
+    expect.assertions(1)
 
-  expect(mail._message.to).toEqual(['one@domain.com', 'two@domain.com'])
-})
+    const mail = new Mail({ from: 'from@domain.com' }, new MockTransport())
+    const sent = mail.send('hello', (message) => message.to('to@domain.com'))
+    await expect(sent)
+      .resolves
+      .toEqual(expect.objectContaining({
+        from: 'from@domain.com',
+        replyTo: 'from@domain.com'
+      }))
+  })
 
-test('supports name and email combination in receiver', () => {
-  let mail = new Mail({})
-  mail.to('John Smith', 'js@domain.com')
+  test("sets html and text body", async () => {
+    expect.assertions(1)
 
-  expect(mail._message.to).toEqual([{
-    name: 'John Smith',
-    address: 'js@domain.com'
-  }])
-})
+    const mail = new Mail({}, new MockTransport())
+    const sent = mail.send({ html: '<p>Hello</p>', text: 'Hello' }, (message) => message.from('from@domain.com').to('to@domain.com'))
+    await expect(sent)
+      .resolves
+      .toEqual(expect.objectContaining({
+        html: '<p>Hello</p>',
+        text: 'Hello'
+      }))
+  })
 
-test('sets "from" header from config', () => {
-  let mail = new Mail({ from: 'from@domain.com' })
+  test('throws when "from" header is missing', async () => {
+    expect.assertions(1)
 
-  expect(mail._message.from).toBe('from@domain.com')
-})
-
-test('throws when "from" header is missing', () => {
-  let mail = new Mail({})
-  mail.to('to@domain.com')
-    .text('Email body')
-    .html('<p>Email body</p>')
-
-  expect(() => mail.send()).toThrow(MissingMailParams)
-})
-
-test('throws when "to" header is missing', () => {
-  let mail = new Mail({})
-  mail.from('from@domain.com')
-    .text('Email body')
-    .html('<p>Email body</p>')
-
-  expect(() => mail.send()).toThrow(MissingMailParams)
-})
-
-test('throws when body is missing', () => {
-  let mail = new Mail({})
-  mail.from('from@domain.com')
-    .to('to@domain.com')
-
-  expect(() => mail.send()).toThrow(MissingMailParams)
-})
-
-test('throws when mail sending fails', () => {
-  let mailer = {
-    transport: {
-      sendMail(message, callback) {
-        callback(new Error())
-      }
-    },
-    createTransport(config) {
-      return this.transport
+    try {
+      const mail = new Mail({}, new MockTransport())
+      const sent = await mail.send('hello', (message) => message.to('to@domain.com'))
+    } catch (err) {
+      expect(err).toBeInstanceOf(MissingMailParams)
     }
-  }
-  let mail = new Mail({}, mailer)
-  mail.from('from@domain.com')
-    .to('to@domain.com')
-    .text('Email body')
-    .html('<p>Email body</p>')
+  })
 
-  expect(() => mail.send()).toThrow(MailSendingFailed)
-})
+  test('throws when "to" header is missing', async () => {
+    expect.assertions(1)
 
-test("address from arguments returns null when empty", () => {
-  let mail = new Mail({})
-  expect(mail._addressFromArgs()).toBe(null)
-  expect(mail._addressFromArgs([])).toBe(null)
+    try {
+      const mail = new Mail({}, new MockTransport())
+      const sent = await mail.send('hello', (message) => message.from('from@domain.com'))
+    } catch (err) {
+      expect(err).toBeInstanceOf(MissingMailParams)
+    }
+  })
+
+  test('throws when mail sending fails', async () => {
+    expect.assertions(1)
+
+    try {
+      const mail = new Mail({}, new MockTransport(true))
+      const sent = await mail.send('hello', (message) => message.from('from@domain.com').to('to@domain.com'))
+    } catch (err) {
+      expect(err).toBeInstanceOf(MailSendingFailed)
+    }
+  })
 })

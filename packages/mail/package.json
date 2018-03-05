@@ -24,6 +24,8 @@
     "test-ci": "jest --coverage && cat ./coverage/lcov.info | coveralls"
   },
   "dependencies": {
+    "aws-sdk": "^2.205.0",
+    "express": "^4.16.2",
     "nodemailer": "^4.6.0"
   },
   "devDependencies": {

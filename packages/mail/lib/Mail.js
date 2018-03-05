@@ -1,209 +1,97 @@
-const nodemailer = require('nodemailer')
+const Message = require('./message')
 const MailSendingFailed = require('./errors/mail-sending-failed')
 const MissingMailParams = require('./errors/missing-mail-params')
 
 /**
  * Mail class.
- * Builds and sens email messages.
+ * Sends email messages.
+ * 
+ * @package sapphirejs/mail
 */
 class Mail {
-  constructor(config, mailer = null) {
+  constructor(config, transport) {
     this._config = config
-    this._mailer = mailer || nodemailer
-    this._message = {
-      from: this._config.from || null,
-      to: [],
-      cc: [],
-      bcc: [],
-      attachments: [],
-      headers: {},
-      alternatives: []
-    }
-  }
-
-  /**
-   * Priority constants.
-   * @returns {Object}
-   */
-  static get priority() {
-    return {
-      high: 'high',
-      normal: 'normal',
-      low: 'low'
-    }
-  }
-
-  /**
-   * "from" header.
-   * @param {*} args - Email or name, email.
-   * @returns {Mail}
-   */
-  from(...args) {
-    if (args && args.length) this._message.from = this._addressFromArgs(args)
-    return this
-  }
-
-  /**
-   * "from" header.
-   * @param {*} args - Email or name, email.
-   * @returns {Mail}
-   */
-  replyTo(...args) {
-    if (args && args.length) this._message.replyTo = this._addressFromArgs(args)
-    return this
-  }
-
-  /**
-   * "to" header.
-   * @param {*} args - Email or name, email.
-   * @returns {Mail}
-   */
-  to(...args) {
-    if (args && args.length) this._message.to.push(this._addressFromArgs(args))
-    return this
-  }
-
-  /**
-   * "cc" header.
-   * @param {*} args - Email or name, email.
-   * @returns {Mail}
-   */
-  cc(...args) {
-    if (args && args.length) this._message.cc.push(this._addressFromArgs(args))
-    return this
-  }
-
-  /**
-   * "bcc" header.
-   * @param {*} args - Email or name, email.
-   * @returns {Mail}
-   */
-  bcc(...args) {
-    if (args && args.length) this._message.bcc.push(this._addressFromArgs(args))
-    return this
-  }
-
-  /**
-   * "subject" header.
-   * @param {string} subject
-   * @returns {Mail}
-   */
-  subject(subject) {
-    this._message.subject = subject
-    return this
-  }
-
-   /**
-   * Text body.
-   * @param {string} text
-   * @returns {Mail}
-   */
-  text(text) {
-    this._message.text = text
-    return this
-  }
-
-   /**
-   * HTML body.
-   * @param {string} html
-   * @returns {Mail}
-   */
-  html(html) {
-    this._message.html = html
-    return this
-  }
-
-  /**
-   * Attachments.
-   * @param {Object} data
-   * @returns {Mail}
-   */
-  attachment(data) {
-    this._message.attachments.push(data)
-    return this
-  }
-
-  /**
-   * Custom header.
-   * @param {string} name
-   * @param {string} value
-   * @param {boolean} prepared
-   * @returns {Mail}
-   */
-  header(name, value, prepared = false) {
-    this._message.headers[name] = { value, prepared }
-    return this
-  }
-
-  /**
-   * HTML body.
-   * @param {string} type - Content type
-   * @param {string} content
-   * @returns {Mail}
-   */
-  alternatives(type, content) {
-    this._message.alternatives.push({
-      contentType: type,
-      content
-    })
-    return this
-  }
-
-  /**
-   * Email priority.
-   * @param {string} priority - high, medium or low
-   * @returns {Mail}
-   */
-  priority(priority) {
-    this._message.priority = priority
-    return this
+    this._transport = transport
   }
 
   /**
    * Send the email.
+   * 
    * @param {string} content
    * @returns {Mail}
    * @throws {MissingMailParams} Email headers incomplete
    * @throws {MailSendingFailed} Fail to send email
    */
-  send() {
-    this._validateMessage()
+  async send(body, cb) {
+    const params = typeof cb === 'function' ? cb(new Message()).message : {}
+    const message = this._mergeDefaults(params)
+    const messageWithBody = this._addBody(message, body)
 
-    let transport = this._mailer.createTransport(this._config)
-    transport.sendMail(this._message, (err) => {
-      if (err)
+    let { err } = this._validateMessage(messageWithBody)
+    if (err) throw new MissingMailParams(err)
+
+    return this._transport.send(this._config, messageWithBody)
+      .then((info) => {
+        return info
+      })
+      .catch((err) => {
         throw new MailSendingFailed(`Failed to send mail. System response: ${err.message}`)
-    })
+      })
   }
 
   /**
-   * Get either an email or name, email combination.
-   * @param {string[]} args
-   * @returns {string|Object}
+   * Add body parameters to the message.
+   * 
+   * @param {Object} message 
+   * @param {string|Object} body 
+   * @returns {Object}
    */
-  _addressFromArgs(args) {
-    if (!args || args.length == 0) return null
+  _addBody(message, body) {
+    let messageWithBody = { ...message }
 
-    return args.length == 1
-      ? args[0]
-      : { name: args[0], address: args[1] }
+    body === Object(body)
+      ? Object.assign(messageWithBody, { html: body.html, text: body.text })
+      : messageWithBody.html = body
+
+    return messageWithBody
   }
 
   /**
-   * Validate message headers,
-   * @throws {MissingMailParams}
+   * Add some sensible defaults to the message
+   * from the config.
+   * 
+   * @param {Object} message 
+   * @returns {Object}
    */
-  _validateMessage() {
-    let message = this._message
+  _mergeDefaults(params) {
+    let message = { ...params }
 
+    if (!message.from && this._config.from)
+      message.from = this._config.from
+
+    if (!message.replyTo && message.from)
+      message.replyTo = message.from
+
+    return message
+  }
+
+  /**
+   * Validate message headers.
+   * 
+   * @param {Object} message
+   * @returns {Object}
+   */
+  _validateMessage(message) {
     if (!message.from)
-      throw new MissingMailParams(`Missing "from" parameter. Either set it as a config option with key "from" or call the from() function.`)
+      return { err: `Missing 'from' parameter. Either set it as a config option with key 'from' or call the from() function.` }
 
     if (!message.to.length)
-      throw new MissingMailParams(`Missing "to" parameter. Set it with the to() function.`)
+      return { err: `Missing 'to' parameter. Set it with the to() function.` }
 
     if (!message.text && !message.html)
-      throw new MissingMailParams(`Missing mail message. Set it with the text() or html() functions.`)
+      return { err: `Missing mail message. Set it with the text() or html() functions.` }
+
+    return { err: null }
   }
 }
 
