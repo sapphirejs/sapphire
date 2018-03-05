@@ -40,6 +40,15 @@ new Intl(locales, 'en-us')
 // You have no messages
 ```
 
+No matter how deep objects are nested, they can be easily accessed as a path:
+
+```javascript
+new Intl(locales, 'en-us')
+  .format('first.second.third', { name: 'John' })
+// Hi John  from deep nested key
+```
+
+
 Language can be set dynamically after initialization:
 
 ```javascript
