@@ -1,4 +1,4 @@
-# Sapphire Validator
+# Sapphire Mail
 
 A fluent email sender built as a thin wrapper on top of [nodemailer](https://github.com/nodemailer/nodemailer). It handles almost everything nodemailer does, but presents them in a more intuitive package. Actually supports STMP transport only, with plans to provide more in the future.
 
