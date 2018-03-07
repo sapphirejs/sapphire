@@ -1,0 +1,29 @@
+{
+  "name": "@sapphirejs/logger",
+  "version": "0.0.10",
+  "description": "Logger for Sapphire Framework",
+  "license": "MIT",
+  "author": "Fadion Dashi <jonidashi@gmail.com>",
+  "keywords": [
+    "logger",
+    "log",
+    "sapphire",
+    "framework"
+  ],
+  "main": "index.js",
+  "engines": {
+    "node": ">= 8.3.0"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "test": "jest",
+    "lint": "eslint ./src",
+    "test-ci": "jest --coverage && cat ./coverage/lcov.info | coveralls"
+  },
+  "dependencies": {
+    "winston": "^3.0.0-rc1",
+    "winston-daily-rotate-file": "^2.0.0-rc.2"
+  }
+}
