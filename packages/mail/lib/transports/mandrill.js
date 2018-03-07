@@ -2,20 +2,20 @@ const nodemailer = require('nodemailer')
 
 /**
  * Mandrill Transport.
- * 
+ *
  * @package sapphirejs/mail
 */
-class MandrillTransport {
+class Mandrill {
   /**
    * Sends the message.
-   * 
-   * @param {Object} config 
+   *
+   * @param {Object} config
    * @param {Object} message
-   * @returns {Prommise} 
+   * @returns {Prommise}
    */
   send(config, message) {
     // @TODO implement Mandrill Transport
   }
 }
 
-module.exports = MandrillTransport
+module.exports = Mandrill

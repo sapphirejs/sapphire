@@ -2,16 +2,16 @@ const nodemailer = require('nodemailer')
 
 /**
  * SMTP Transport.
- * 
+ *
  * @package sapphirejs/mail
 */
-class SmtpTransport {
+class SMTP {
   /**
    * Sends the message.
-   * 
-   * @param {Object} config 
+   *
+   * @param {Object} config
    * @param {Object} message
-   * @returns {Prommise} 
+   * @returns {Prommise}
    */
   send(config, message) {
     let transport = nodemailer.createTransport(config)
@@ -19,4 +19,4 @@ class SmtpTransport {
   }
 }
 
-module.exports = SmtpTransport
+module.exports = SMTP

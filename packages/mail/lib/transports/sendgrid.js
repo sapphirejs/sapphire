@@ -2,20 +2,20 @@ const nodemailer = require('nodemailer')
 
 /**
  * Sendgrid Transport.
- * 
+ *
  * @package sapphirejs/mail
 */
-class SendgridTransport {
+class Sendgrid {
   /**
    * Sends the message.
-   * 
-   * @param {Object} config 
+   *
+   * @param {Object} config
    * @param {Object} message
-   * @returns {Prommise} 
+   * @returns {Prommise}
    */
   send(config, message) {
     // @TODO implement Sendgrid Transport
   }
 }
 
-module.exports = SendgridTransport
+module.exports = Sendgrid

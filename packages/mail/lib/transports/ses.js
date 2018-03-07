@@ -3,16 +3,16 @@ const aws = require('aws-sdk')
 
 /**
  * SMTP Transport.
- * 
+ *
  * @package sapphirejs/mail
 */
-class SesTransport {
+class SES {
   /**
    * Sends the message.
-   * 
-   * @param {Object} config 
+   *
+   * @param {Object} config
    * @param {Object} message
-   * @returns {Prommise} 
+   * @returns {Prommise}
    */
   send(config, message) {
     let transport = nodemailer.createTransport({
@@ -22,4 +22,4 @@ class SesTransport {
   }
 }
 
-module.exports = SesTransport
+module.exports = SES
