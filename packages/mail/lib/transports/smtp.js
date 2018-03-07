@@ -3,12 +3,13 @@ const nodemailer = require('nodemailer')
 /**
  * SMTP Transport.
  *
- * @package sapphirejs/mail
+ * @class SMTP
 */
 class SMTP {
   /**
    * Sends the message.
    *
+   * @public
    * @param {Object} config
    * @param {Object} message
    * @returns {Prommise}

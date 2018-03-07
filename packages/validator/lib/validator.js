@@ -5,7 +5,7 @@ const Joi = require('joi')
  * Validates the set of rules and builds an
  * error object
  *
- * @module sapphirejs/validator
+ * @class Validator
 */
 class Validator {
   /**
@@ -22,6 +22,7 @@ class Validator {
    * Transfors Joi's error object into a
    * simplified form.
    *
+   * @private
    * @param {Error} error
    */
   _prepareErrors(error) {
@@ -39,6 +40,7 @@ class Validator {
   /**
    * Check if validation passes.
    *
+   * @public
    * @returns {boolean}
    */
   get passes() {
@@ -48,6 +50,7 @@ class Validator {
   /**
    * Check if validation failed.
    *
+   * @public
    * @returns {boolean}
    */
   get fails() {
@@ -57,6 +60,7 @@ class Validator {
   /**
    * Get the error messages.
    *
+   * @public
    * @returns {Object}
    */
   get errors() {

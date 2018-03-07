@@ -5,7 +5,7 @@ const Validator = require('./validator')
  * Intercepts request parameters and validates them
  * by the rules of a subclass.
  *
- * @module sapphirejs/validator
+ * @class Middleware
 */
 class Middleware {
   constructor() {
@@ -18,6 +18,7 @@ class Middleware {
    * Express middleware that runs the validator and
    * injects it as an instance.
    *
+   * @public
    * @param {Object} req
    * @param {Object} res
    * @param {Function} next
@@ -30,6 +31,7 @@ class Middleware {
   /**
    * Builds the fields to be used for validation.
    *
+   * @public
    * @param {Object} req
    * @returns {Object}
    */

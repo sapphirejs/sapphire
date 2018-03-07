@@ -3,12 +3,13 @@ const nodemailer = require('nodemailer')
 /**
  * Sparkpost Transport.
  *
- * @package sapphirejs/mail
+ * @class Sparkpost
 */
 class Sparkpost {
   /**
    * Sends the message.
    *
+   * @public
    * @param {Object} config
    * @param {Object} message
    * @returns {Prommise}

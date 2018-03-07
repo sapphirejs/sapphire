@@ -5,10 +5,14 @@ const MissingMailParams = require('./errors/missing-mail-params')
 /**
  * Mail class.
  * Sends email messages.
- * 
- * @package sapphirejs/mail
+ *
+ * @class Mail
 */
 class Mail {
+  /**
+   * @param {Object} config
+   * @param {Object} transport
+   */
   constructor(config, transport) {
     this._config = config
     this._transport = transport
@@ -16,7 +20,8 @@ class Mail {
 
   /**
    * Send the email.
-   * 
+   *
+   * @public
    * @param {string} content
    * @returns {Mail}
    * @throws {MissingMailParams} Email headers incomplete
@@ -41,9 +46,10 @@ class Mail {
 
   /**
    * Add body parameters to the message.
-   * 
-   * @param {Object} message 
-   * @param {string|Object} body 
+   *
+   * @private
+   * @param {Object} message
+   * @param {string|Object} body
    * @returns {Object}
    */
   _addBody(message, body) {
@@ -59,8 +65,9 @@ class Mail {
   /**
    * Add some sensible defaults to the message
    * from the config.
-   * 
-   * @param {Object} message 
+   *
+   * @private
+   * @param {Object} message
    * @returns {Object}
    */
   _mergeDefaults(params) {
@@ -77,7 +84,8 @@ class Mail {
 
   /**
    * Validate message headers.
-   * 
+   *
+   * @private
    * @param {Object} message
    * @returns {Object}
    */

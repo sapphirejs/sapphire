@@ -3,12 +3,13 @@ const nodemailer = require('nodemailer')
 /**
  * Mandrill Transport.
  *
- * @package sapphirejs/mail
+ * @class Mandril
 */
 class Mandrill {
   /**
    * Sends the message.
    *
+   * @public
    * @param {Object} config
    * @param {Object} message
    * @returns {Prommise}

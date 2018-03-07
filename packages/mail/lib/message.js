@@ -1,8 +1,8 @@
 /**
  * Message class.
  * Builds an email message.
- * 
- * @package sapphirejs/mail
+ *
+ * @class Message
 */
 class Message {
   constructor() {
@@ -18,6 +18,9 @@ class Message {
 
   /**
    * Get the message object.
+   *
+   * @public
+   * @returns {Object}
    */
   get message() {
     return this._message
@@ -25,7 +28,8 @@ class Message {
 
   /**
    * "from" header.
-   * 
+   *
+   * @public
    * @param {*} args - Email or name, email.
    * @returns {Message}
    */
@@ -36,7 +40,8 @@ class Message {
 
   /**
    * "replyTo" header.
-   * 
+   *
+   * @public
    * @param {*} args - Email or name, email.
    * @returns {Message}
    */
@@ -47,7 +52,8 @@ class Message {
 
   /**
    * "to" header.
-   * 
+   *
+   * @public
    * @param {*} args - Email or name, email.
    * @returns {Message}
    */
@@ -58,7 +64,8 @@ class Message {
 
   /**
    * "cc" header.
-   * 
+   *
+   * @public
    * @param {*} args - Email or name, email.
    * @returns {Message}
    */
@@ -69,7 +76,8 @@ class Message {
 
   /**
    * "bcc" header.
-   * 
+   *
+   * @public
    * @param {*} args - Email or name, email.
    * @returns {Message}
    */
@@ -80,7 +88,8 @@ class Message {
 
   /**
    * "subject" header.
-   * 
+   *
+   * @public
    * @param {string} subject
    * @returns {Message}
    */
@@ -91,7 +100,8 @@ class Message {
 
   /**
    * Attach a file.
-   * 
+   *
+   * @public
    * @param {Object} data
    * @returns {Message}
    */
@@ -102,7 +112,8 @@ class Message {
 
   /**
    * Custom header.
-   * 
+   *
+   * @public
    * @param {string} name
    * @param {string} value
    * @param {boolean} prepared
@@ -115,7 +126,8 @@ class Message {
 
   /**
    * Alternative body.
-   * 
+   *
+   * @public
    * @param {string} type - Content type
    * @param {string} content
    * @returns {Message}
@@ -130,7 +142,8 @@ class Message {
 
   /**
    * Email priority.
-   * 
+   *
+   * @public
    * @param {string} priority - high, medium or low
    * @returns {Message}
    */
@@ -142,7 +155,8 @@ class Message {
   /**
    * Add an address supporting either an email
    * or (name, email) combination.
-   * 
+   *
+   * @private
    * @param {string} key
    * @param {string[]} args
    */

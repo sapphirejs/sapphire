@@ -7,7 +7,7 @@ const InvalidLocaleMessage = require('./errors/invalid-locale-message')
 /**
 * Internationalization package.
 
-* @module sapphirejs/intl
+* @class Intl
 */
 class Intl {
   /**
@@ -26,6 +26,7 @@ class Intl {
    * Formats a locale string with a given
    * key path.
    *
+   * @public
    * @param {string} path
    * @param {Object} data
    * @returns {string}
@@ -58,6 +59,7 @@ class Intl {
   /**
    * Returns the current locale.
    *
+   * @public
    * @returns {string}
    */
   get locale() {
@@ -66,6 +68,9 @@ class Intl {
 
   /**
    * Sets the locale dynamically.
+   *
+   * @public
+   * @param {string} locale
    */
   set locale(locale) {
     this._locale = locale
@@ -75,6 +80,7 @@ class Intl {
    * Sets the locale temporarily for a single
    * format call.
    *
+   * @public
    * @param {string} locale
    * @returns {Intl}
    */
@@ -86,6 +92,7 @@ class Intl {
   /**
    * Checks if the locale exists.
    *
+   * @private
    * @param {string} locale
    * @throws {MissingLocale} When locale doesn't exist
    */

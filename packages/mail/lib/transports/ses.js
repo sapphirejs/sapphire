@@ -4,12 +4,13 @@ const aws = require('aws-sdk')
 /**
  * SMTP Transport.
  *
- * @package sapphirejs/mail
+ * @class SES
 */
 class SES {
   /**
    * Sends the message.
    *
+   * @public
    * @param {Object} config
    * @param {Object} message
    * @returns {Prommise}

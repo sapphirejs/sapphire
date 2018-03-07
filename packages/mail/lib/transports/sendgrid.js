@@ -3,12 +3,13 @@ const nodemailer = require('nodemailer')
 /**
  * Sendgrid Transport.
  *
- * @package sapphirejs/mail
+ * @class Sendgrid
 */
 class Sendgrid {
   /**
    * Sends the message.
    *
+   * @public
    * @param {Object} config
    * @param {Object} message
    * @returns {Prommise}
