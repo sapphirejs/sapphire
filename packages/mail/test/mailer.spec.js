@@ -89,6 +89,17 @@ describe('mail', () => {
       }))
   })
 
+  test('throws when callback is not provided', async () => {
+    expect.assertions(1)
+
+    try {
+      const mail = new Mail({}, new MockTransport())
+      const sent = await mail.send('hello')
+    } catch (err) {
+      expect(err).toBeInstanceOf(MissingMailParams)
+    }
+  })
+
   test('throws when "from" header is missing', async () => {
     expect.assertions(1)
 
