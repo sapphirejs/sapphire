@@ -2,13 +2,13 @@ const winston = require('winston')
 
 /**
  * Logger as a thin interface to Winston.
- * 
+ *
  * @class Logger
  */
 class Logger {
   /**
-   * @param {Object} config 
-   * @param {Object} transport 
+   * @param {Object} config
+   * @param {Object} transport
    */
   constructor(config, transport) {
     this._config = config
@@ -31,7 +31,7 @@ class Logger {
 
   /**
    * Creates the winston logger instance.
-   * 
+   *
    * @public
    * @returns {Object}
    */

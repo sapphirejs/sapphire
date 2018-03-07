@@ -7,7 +7,7 @@ An initializer for [Winston](https://github.com/winstonjs/winston). It doesn't a
 ```javascript
 const { Logger, Transport } = require('@sapphirejs/logger')
 
-const logger = new Logger({}, new Transport.Console())
+const logger = new Logger({}, new Transport.Console()).createLogger()
 
 logger.emerg('Emergency')
 logger.alert('Alert')
@@ -31,7 +31,7 @@ Output messages directly to the console (stdout/stderr).
 
 ```javascript
 const { Logger, Transport } = require('@sapphirejs/logger')
-const logger = new Logger({}, new Transport.Console())
+const logger = new Logger({}, new Transport.Console()).createLogger()
 ```
 
 ## File
@@ -40,7 +40,7 @@ Write messages to a single log file.
 
 ```javascript
 const { Logger, Transport } = require('@sapphirejs/logger')
-const logger = new Logger({}, new Transport.File({ filename: 'my.log' }))
+const logger = new Logger({}, new Transport.File({ filename: 'my.log' })).createLogger()
 ```
 
 ## Daily File Rotate
@@ -49,5 +49,5 @@ Write messages to a different file every day. This is a good way of chunking a b
 
 ```javascript
 const { Logger, Transport } = require('@sapphirejs/logger')
-const logger = new Logger({}, new Transport.Daily({ filename: './logs/%DATE%.log' }))
+const logger = new Logger({}, new Transport.Daily({ filename: './logs/%DATE%.log' })).createLogger()
 ```
