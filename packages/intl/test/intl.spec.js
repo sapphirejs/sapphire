@@ -53,10 +53,6 @@ test('locale is reported correctly', () => {
 
 test("throws when locale doesn't exist", () => {
   expect(() => {
-    new Intl(locales, 'fr')
-  }).toThrow(MissingLocale)
-
-  expect(() => {
     let intl = new Intl(locales, 'en-us')
     intl.locale = 'fr'
     intl.format('welcome', { name: 'John' })

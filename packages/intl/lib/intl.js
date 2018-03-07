@@ -13,13 +13,11 @@ class Intl {
   /**
    * @param {Object} locales
    * @param {string} locale
-   * @throws {MissingLocale} When locale doesn't exist
    */
   constructor(locales, locale) {
     this._locales = locales
     this._locale = locale
     this._tempLocale = null
-    this._localeExists(locale)
   }
 
   /**
@@ -36,7 +34,9 @@ class Intl {
    */
   format(path, data) {
     let locale = this._tempLocale || this._locale
-    this._localeExists(locale)
+    if (!this._localeExists(locale))
+      throw new MissingLocale(`Locale '${locale}' not found`)
+
     this._tempLocale = null
 
     // Append the locale as a path, to reflect the
@@ -94,11 +94,10 @@ class Intl {
    *
    * @private
    * @param {string} locale
-   * @throws {MissingLocale} When locale doesn't exist
+   * @returns {boolean}
    */
   _localeExists(locale) {
-    if (!this._locales.hasOwnProperty(locale))
-      throw new MissingLocale(`Locale '${locale}' not found`)
+    return this._locales.hasOwnProperty(locale)
   }
 }
 
