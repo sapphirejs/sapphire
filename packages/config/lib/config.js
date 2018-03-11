@@ -63,6 +63,17 @@ class Config {
   }
 
   /**
+   * Checks if a key exists.
+   *
+   * @public
+   * @param {string} key
+   * @returns {boolean}
+   */
+  has(key = null) {
+    return this.get(key) !== null
+  }
+
+  /**
    * Checks if a directory exists
    *
    * @private

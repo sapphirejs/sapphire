@@ -29,3 +29,9 @@ It even supports path syntax for deep nested object keys:
 ```js
 config.get('app.secret.password') // framw123
 ```
+
+To quickly check if a quick exists:
+
+```js
+config.has('app.name') // true
+```

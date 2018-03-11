@@ -30,7 +30,15 @@ test("returns null when the key isn't a string", () => {
 
 test('returns null with an empty parameter', () => {
   const config = new Config(directory, true)
+
   expect(config.get()).toBe(null)
+})
+
+test('returns boolean on check if key exists', () => {
+  const config = new Config(directory, true)
+
+  expect(config.has('app.key')).toBe(true)
+  expect(config.has('app.no.no')).toBe(false)
 })
 
 test("throws when the config directory doesn't exist", () => {
