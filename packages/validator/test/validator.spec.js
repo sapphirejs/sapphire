@@ -1,5 +1,4 @@
 const { rule, Validator, ValidatorMiddleware } = require('../index')
-const { test, expect } = global
 
 let rules = {
   name: rule.string().alphanum().required(),
@@ -49,7 +48,7 @@ test('handles middleware validation', () => {
     middleware(req, {}, () => { callback(req, {}) })
   }
 
-  expressMock(new UserValidator().middleware, (req, res) => {
+  expressMock(new UserValidator().middleware, (req) => {
     expect(req.validator).toBeDefined()
     expect(req.validator.passes).toBe(true)
     expect(req.validator.fails).toBe(false)

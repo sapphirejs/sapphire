@@ -1,6 +1,5 @@
 const Config = require('../lib/config')
 const BadArguments = require('../lib/bad-arguments')
-let { test, expect } = global
 
 const directory = '/tests/helpers/config'
 

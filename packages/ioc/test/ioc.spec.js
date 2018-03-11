@@ -3,8 +3,6 @@ const {
   ServiceNotFound
 } = require('../index')
 
-let { test, expect} = global
-
 // Import helpers
 const SimpleClass = require('./helpers/simple-class')
 const FakeConfig = require('./helpers/fake-config')

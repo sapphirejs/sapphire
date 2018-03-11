@@ -1,5 +1,4 @@
 const { Intl, MissingLocale, MissingLocaleKey, InvalidLocaleMessage } = require('../index')
-const { test, expect } = global
 
 let locales = {
   'en-us': {

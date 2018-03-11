@@ -1,4 +1,4 @@
-const { Mail, Message, Transport, MailSendingFailed, MissingMailParams } = require('../index')
+const { Mail, Message, MailSendingFailed, MissingMailParams } = require('../index')
 
 class MockTransport {
   constructor(shouldErr = false) {
@@ -94,7 +94,7 @@ describe('mail', () => {
 
     try {
       const mail = new Mail({}, new MockTransport())
-      const sent = await mail.send('hello')
+      await mail.send('hello')
     } catch (err) {
       expect(err).toBeInstanceOf(MissingMailParams)
     }
@@ -105,7 +105,7 @@ describe('mail', () => {
 
     try {
       const mail = new Mail({}, new MockTransport())
-      const sent = await mail.send('hello', (message) => message.to('to@domain.com'))
+      await mail.send('hello', (message) => message.to('to@domain.com'))
     } catch (err) {
       expect(err).toBeInstanceOf(MissingMailParams)
     }
@@ -116,7 +116,7 @@ describe('mail', () => {
 
     try {
       const mail = new Mail({}, new MockTransport())
-      const sent = await mail.send('hello', (message) => message.from('from@domain.com'))
+      await mail.send('hello', (message) => message.from('from@domain.com'))
     } catch (err) {
       expect(err).toBeInstanceOf(MissingMailParams)
     }
@@ -127,7 +127,7 @@ describe('mail', () => {
 
     try {
       const mail = new Mail({}, new MockTransport(true))
-      const sent = await mail.send('hello', (message) => message.from('from@domain.com').to('to@domain.com'))
+      await mail.send('hello', (message) => message.from('from@domain.com').to('to@domain.com'))
     } catch (err) {
       expect(err).toBeInstanceOf(MailSendingFailed)
     }

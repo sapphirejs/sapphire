@@ -1,6 +1,6 @@
 /**
  * Response Wrapper.
- * 
+ *
  * @class Response
  */
 class Response {
@@ -20,9 +20,9 @@ class Response {
   /**
    * Render a template file.
    *
-   * @public 
-   * @param {string} file 
-   * @param {Object} parameters 
+   * @public
+   * @param {string} file
+   * @param {Object} parameters
    * @returns {Object}
    */
   render(file, parameters) {
@@ -36,8 +36,8 @@ class Response {
   /**
    * Output HTML.
    *
-   * @public 
-   * @param {string} content 
+   * @public
+   * @param {string} content
    * @returns {Object}
    */
   html(content) {
@@ -49,8 +49,8 @@ class Response {
   /**
    * Output JSON.
    *
-   * @public 
-   * @param {content} file 
+   * @public
+   * @param {content} file
    * @returns {Object}
    */
   json(content) {
@@ -62,8 +62,8 @@ class Response {
   /**
    * Output JSONP.
    *
-   * @public 
-   * @param {string} content 
+   * @public
+   * @param {string} content
    * @returns {Object}
    */
   jsonp(content) {
@@ -75,8 +75,8 @@ class Response {
   /**
    * Output XML.
    *
-   * @public 
-   * @param {string} content 
+   * @public
+   * @param {string} content
    * @returns {Object}
    */
   xml(content) {
@@ -88,8 +88,8 @@ class Response {
   /**
    * Output a file for download.
    *
-   * @public 
-   * @param {string} file 
+   * @public
+   * @param {string} file
    * @returns {Object}
    */
   download(file) {
@@ -101,20 +101,21 @@ class Response {
   /**
    * End the response without output.
    *
-   * @public 
-   * @param {string} data 
+   * @public
+   * @param {string} data
    * @returns {Object}
    */
   end(data = null) {
     this._response.end = true
+    this._response.content = data
     return this._response
   }
 
   /**
    * Redirect to a URL.
    *
-   * @public 
-   * @param {string} url 
+   * @public
+   * @param {string} url
    * @returns {Object}
    */
   redirect(url) {
@@ -127,7 +128,7 @@ class Response {
    * Output a RAW response without futher
    * processing.
    *
-   * @public 
+   * @public
    * @param {string} content
    * @returns {Object}
    */
@@ -140,8 +141,8 @@ class Response {
   /**
    * Sets the HTTP status.
    *
-   * @public 
-   * @param {number} status 
+   * @public
+   * @param {number} status
    * @returns {Response}
    */
   status(status) {
@@ -152,8 +153,8 @@ class Response {
   /**
    * Sets the content type.
    *
-   * @public 
-   * @param {string} type 
+   * @public
+   * @param {string} type
    * @returns {Response}
    */
   type(type) {
