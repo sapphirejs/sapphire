@@ -14,23 +14,23 @@ let locales = {
 
 test('key is found and formatted correctly', () => {
   const intl = new Intl(locales, 'en-us')
-  let message = intl.format('welcome', { name: 'John' })
+  const message = intl.format('welcome', { name: 'John' })
 
   expect(message).toBe('Welcome John')
 })
 
 test('deep nested key is found and formatted correctly', () => {
   const intl = new Intl(locales, 'en-us')
-  let message = intl.format('first.second.third', { name: 'John' })
+  const message = intl.format('first.second.third', { name: 'John' })
 
   expect(message).toBe('Hi John from deep nested key')
 })
 
 test('locale is changed after initialization', () => {
   const intl = new Intl(locales, 'en-us')
-  let messageEn = intl.format('welcome', { name: 'John' })
+  const messageEn = intl.format('welcome', { name: 'John' })
   intl.locale = 'sq-al'
-  let messageSq = intl.format('welcome', { name: 'Xhon' })
+  const messageSq = intl.format('welcome', { name: 'Xhon' })
 
   expect(messageEn).toBe('Welcome John')
   expect(messageSq).toBe('Miresevjen Xhon')
@@ -38,8 +38,8 @@ test('locale is changed after initialization', () => {
 
 test('locale is changed temporarily for a single format call', () => {
   const intl = new Intl(locales, 'en-us')
-  let messageEn = intl.format('welcome', { name: 'John' })
-  let messageSq = intl.in('sq-al').format('welcome', { name: 'Xhon' })
+  const messageEn = intl.format('welcome', { name: 'John' })
+  const messageSq = intl.in('sq-al').format('welcome', { name: 'Xhon' })
 
   expect(messageEn).toBe('Welcome John')
   expect(messageSq).toBe('Miresevjen Xhon')
@@ -52,20 +52,20 @@ test('locale is reported correctly', () => {
 
 test("throws when locale doesn't exist", () => {
   expect(() => {
-    let intl = new Intl(locales, 'en-us')
+    const intl = new Intl(locales, 'en-us')
     intl.locale = 'fr'
     intl.format('welcome', { name: 'John' })
   }).toThrow(MissingLocale)
 
   expect(() => {
-    let intl = new Intl(locales, 'en-us')
+    const intl = new Intl(locales, 'en-us')
     intl.in('fr').format('welcome', { name: 'John' })
   }).toThrow(MissingLocale)
 })
 
 test("throws when locale key doesn't exist", () => {
   expect(() => {
-    let intl = new Intl(locales, 'en-us')
+    const intl = new Intl(locales, 'en-us')
     intl.format('unknown', { name: 'John' })
   }).toThrow(MissingLocaleKey)
 })
@@ -73,7 +73,7 @@ test("throws when locale key doesn't exist", () => {
 test('throws when locale message is not correctly formatted', () => {
   expect(() => {
     locales['en-us'].welcome = 'Welcome {{name}'
-    let intl = new Intl(locales, 'en-us')
+    const intl = new Intl(locales, 'en-us')
     intl.format('welcome', { name: 'John' })
   }).toThrow(InvalidLocaleMessage)
 })

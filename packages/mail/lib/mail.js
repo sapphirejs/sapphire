@@ -53,7 +53,7 @@ class Mail {
    * @returns {Object}
    */
   _addBody(message, body) {
-    let messageWithBody = { ...message }
+    const messageWithBody = { ...message }
 
     body === Object(body)
       ? Object.assign(messageWithBody, { html: body.html, text: body.text })
@@ -71,7 +71,7 @@ class Mail {
    * @returns {Object}
    */
   _mergeDefaults(params) {
-    let message = { ...params }
+    const message = { ...params }
 
     if (!message.from && this._config.from)
       message.from = this._config.from

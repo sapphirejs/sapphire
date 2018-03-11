@@ -13,7 +13,7 @@ class UserValidator extends ValidatorMiddleware {
 }
 
 test('passes schema validation', () => {
-  let validator = new Validator({
+  const validator = new Validator({
     name: 'John',
     email: 'john@domain.com',
     age: 27
@@ -25,7 +25,7 @@ test('passes schema validation', () => {
 })
 
 test('fails schema validation', () => {
-  let validator = new Validator({
+  const validator = new Validator({
     email: 'john',
     age: 250
   }, rules)
@@ -36,7 +36,7 @@ test('fails schema validation', () => {
 })
 
 test('handles middleware validation', () => {
-  let expressMock = (middleware, callback) => {
+  const expressMock = (middleware, callback) => {
     let req = {
       body: {
         name: 'John',

@@ -16,7 +16,7 @@ class SES {
    * @returns {Prommise}
    */
   send(config, message) {
-    let transport = nodemailer.createTransport({
+    const transport = nodemailer.createTransport({
       SES: new aws.SES(config)
     })
     return transport.sendMail(message)

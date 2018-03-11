@@ -15,7 +15,7 @@ class SMTP {
    * @returns {Prommise}
    */
   send(config, message) {
-    let transport = nodemailer.createTransport(config)
+    const transport = nodemailer.createTransport(config)
     return transport.sendMail(message)
   }
 }

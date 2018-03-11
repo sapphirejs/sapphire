@@ -163,7 +163,7 @@ class Message {
   _addAddress(key, args) {
     if (!args || args.length == 0) return
 
-    let value = args.length == 1
+    const value = args.length == 1
       ? args[0]
       : { name: args[0], address: args[1] }
 

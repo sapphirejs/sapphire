@@ -29,7 +29,7 @@ class Validator {
     if (!error) return
 
     error.details.forEach(({ path, message }) => {
-      let field = path[0]
+      const field = path[0]
 
       this._errors.hasOwnProperty(field)
         ? this._errors[field].push(message)

@@ -33,7 +33,7 @@ class Intl {
    * @throws {InvalidLocaleMessage} when locale message is not well formatted
    */
   format(path, data) {
-    let locale = this._tempLocale || this._locale
+    const locale = this._tempLocale || this._locale
     if (!this._localeExists(locale))
       throw new MissingLocale(`Locale '${locale}' not found`)
 
@@ -41,15 +41,14 @@ class Intl {
 
     // Append the locale as a path, to reflect the
     // structure of the expected locales object.
-    let localePath = `${locale}.${path}`
-    // objectPath gets values from deeply nested object keys.
-    let value = objectPath.get(this._locales, localePath)
+    const localePath = `${locale}.${path}`
+    const value = objectPath.get(this._locales, localePath)
 
     if (!value)
       throw new MissingLocaleKey(`Locale key '${path}' not found for locale '${locale}'`)
 
     try {
-      let intl = new IntlMessage(value, locale)
+      const intl = new IntlMessage(value, locale)
       return intl.format(data)
     } catch(err) {
       throw new InvalidLocaleMessage(`Locale message on key '${path}' is invalid. System response: ${err.message}`)
