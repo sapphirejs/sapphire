@@ -1,7 +1,9 @@
 const Config = require('./lib/config')
-const ConfigServiceProvider = require('./lib/config-service-provider')
+const ServiceProvider = require('./lib/service-provider')
+const ConfigDirNotFound = require('./lib/errors/config-dir-not-found')
 
 module.exports = {
   Config,
-  ConfigServiceProvider
+  ServiceProvider,
+  ConfigDirNotFound
 }

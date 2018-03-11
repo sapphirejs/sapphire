@@ -1,7 +1,7 @@
 {
   "name": "@sapphirejs/config",
   "version": "0.0.10",
-  "description": "A Config implementation for sapphire-framework",
+  "description": "Config Reader for Sapphire Framework",
   "license": "MIT",
   "author": "Aleksander Koko <aleksanderkoko@gmail.com>",
   "keywords": [
@@ -22,7 +22,7 @@
     "access": "public"
   },
   "dependencies": {
-    "@sapphirejs/commons": "^0.0.10"
+    "object-path": "^0.11.4"
   },
   "devDependencies": {
     "coveralls": "^3.0.0",

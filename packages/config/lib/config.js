@@ -1,74 +1,96 @@
 const fs = require('fs')
-const ConfigBadParameters = require('./config-bad-parameters')
+const path = require('path')
+const objectPath = require('object-path')
+const ConfigDirNotFound = require('./errors/config-dir-not-found')
 
+/**
+ * Reads configuration files.
+ *
+ * @class Config
+ */
 class Config {
-  constructor(configFolder = '/config', preload = false) {
-    configFolder = process.cwd() + configFolder
+  /**
+   * @param {string} directory
+   * @throws {ConfigDirNotFound} if the configuration directory doesn't exist
+   */
+  constructor(directory = '') {
+    const configPath = path.join(process.cwd(), directory)
 
-    if(!this._validateConfigFolder(configFolder))
-      throw new ConfigBadParameters("Bad config folder argument")
-
-    if(!this._validatePreload(preload))
-      throw new ConfigBadParameters("Bad preload parameter. It should be an boolean value")
+    if (!this._directoryExists(configPath))
+      throw new ConfigDirNotFound(`Configuration directory "${directory}" doesn't exist.`)
 
     this._cache = {}
-    this._configFolder = configFolder
+    this._folder = configPath
 
-    if(preload === true)
-      this._preload()
+    // @TODO implement preloading.
   }
 
-  get(key = '') {
-    const arrayOfKeys = key.trim().split('.')
-
-    if(arrayOfKeys[0] === '')
+  /**
+   * Reads a key from the file or cache.
+   * Supports path syntax "file.key" where
+   * the first parameter is always the filename.
+   *
+   * @public
+   * @param {string} key
+   * @returns {*}
+   */
+  get(key = null) {
+    if (!key || typeof key !== 'string')
       return null
 
-    const keyFromCache = this._iterate(arrayOfKeys, this._cache)
-    if(keyFromCache)
-      return keyFromCache
+    const parts = key.split('.')
+    // Hit the in-memory cache first.
+    const cachedValue = objectPath.get(this._cache, parts)
+    if (cachedValue) return cachedValue
 
-    const configFile = require(this._configFolder + '/' + arrayOfKeys[0])
-    const keysForConfig = [...arrayOfKeys]
-    const keyFromConfig = this._iterate(keysForConfig.splice(1), configFile)
-    if(!keyFromConfig)
+    // require() will throw an expection
+    // if the file doesn't exist. We just
+    // need to return null, not throw errors.
+    try {
+      const file = parts[0]
+      const contents = require(`${this._folder}/${file}`)
+      const value = objectPath.get(contents, parts.slice(1))
+
+      if (!value) return null
+
+      this._addToCache(file, contents)
+
+      return value
+    }
+    catch(err) {
       return null
-
-    this._cacheConfig(arrayOfKeys[0], configFile)
-    return keyFromConfig
+    }
   }
 
-  _iterate(arrayOfKeys, objectToIterate) {
-    return arrayOfKeys.reduce(
-      (acumulator, key) =>
-        acumulator !== null && acumulator.hasOwnProperty(key)
-          ? acumulator[key]
-          : null
-      , objectToIterate
-    )
-  }
-
-  _preload() {
-
-  }
-
-  _validatePreload(preload) {
-    return ((typeof preload) === 'boolean')
-  }
-
-  _validateConfigFolder(configFolder) {
-    try{
-      fs.lstatSync(configFolder).isDirectory()
-    }catch(e){
+  /**
+   * Checks if a directory exists
+   *
+   * @private
+   * @param {string} folder
+   * @returns {boolean}
+   */
+  _directoryExists(folder) {
+    try {
+      fs.lstatSync(folder).isDirectory()
+    } catch (err) {
       return false
     }
+
     return true
   }
 
-  _cacheConfig(key, value) {
-    const newPlainObject = {}
-    newPlainObject[key] = value
-    this._cache = {...this._cache, ...newPlainObject}
+  /**
+   * Adds a key to the cache.
+   *
+   * @private
+   * @param {string} key
+   * @param {Object} value
+   */
+  _addToCache(key, value) {
+    this._cache = {
+      ...this._cache,
+      [key]: value
+    }
   }
 }
 
