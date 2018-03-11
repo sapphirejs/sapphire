@@ -1,6 +1,6 @@
 {
   "name": "@sapphirejs/container",
-  "version": "0.0.10",
+  "version": "0.0.11",
   "description": "IOC Container for Sapphire Framework",
   "license": "MIT",
   "author": "Aleksander Koko <aleksanderkoko@gmail.com>",

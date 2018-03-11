@@ -1,6 +1,6 @@
 {
   "name": "@sapphirejs/response",
-  "version": "0.0.10",
+  "version": "0.0.11",
   "description": "Response Wrapper for Sapphire Framework",
   "license": "MIT",
   "author": "Fadion Dashi <jonidahsi@gmail.com>",
@@ -20,8 +20,6 @@
     "test": "jest",
     "lint": "eslint ./src",
     "test-ci": "jest --coverage && cat ./coverage/lcov.info | coveralls"
-  },
-  "dependencies": {
   },
   "devDependencies": {
     "coveralls": "^3.0.0",

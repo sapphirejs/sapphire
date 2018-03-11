@@ -1,6 +1,6 @@
 {
   "name": "@sapphirejs/logger",
-  "version": "0.0.10",
+  "version": "0.0.11",
   "description": "Logger for Sapphire Framework",
   "license": "MIT",
   "author": "Fadion Dashi <jonidashi@gmail.com>",
