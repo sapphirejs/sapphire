@@ -26,7 +26,7 @@ class SendWelcomeEmail {
 }
 
 event.on('user.registered', new SendWelcomeEmail().listen)
-event.emit('user.registered')
+event.emit('user.registered', 10)
 ```
 
 An event can have multiple listeners:
@@ -37,7 +37,7 @@ event.on('user.registered', new SendConfirmationSms().listen)
 
 // or
 
-evevnt.on('user.registered', [
+event.on('user.registered', [
   new SendWelcomeEmail().listen,
   new SendConfirmationSms().listen
 ])
@@ -61,7 +61,7 @@ class SendWelcomeEmail extends BaseEvent {
 
 const event = new Event()
 event.on('user.registered', new SendWelcomeEmail())
-event.emit('user.registered')
+event.emit('user.registered', 7)
 ```
 
 Notice how we don't pass the `listen` method on the event listener. It is automatically resolved when extending BaseEvent.
