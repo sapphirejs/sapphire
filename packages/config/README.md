@@ -1,4 +1,4 @@
-# Sapphire Config
+# Config
 
 A simple configuration package mostly to be used internally for Sapphire Framework.
 

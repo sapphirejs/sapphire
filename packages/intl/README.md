@@ -1,4 +1,4 @@
-# Sapphire Internationalization
+# Internationalization
 
 An Internationalization (Intl for short) package that formats locale strings. It is a thin wrapper on top of [formatjs](https://formatjs.io/) that provides a few facilities like deep nested object paths and changing the locale dynamically.
 

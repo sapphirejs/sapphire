@@ -1,4 +1,4 @@
-# Sapphire Logger
+# Logger
 
 An initializer for [Winston](https://github.com/winstonjs/winston). It doesn't add or modify anything and it exists only to encapsulate winston in a named package and provide some sensible defaults to the transports.
 

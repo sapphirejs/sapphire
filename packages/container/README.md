@@ -1,10 +1,10 @@
+# IOC Container
+
 <p>
   <img src="https://david-dm.org/sapphire-framework/sapphire-ioc.svg" alt="Dependencies" />
   <img src="https://travis-ci.org/sapphire-framework/sapphire-ioc.svg?branch=master" alt="Build status" />
   <a href='https://coveralls.io/github/sapphire-framework/sapphire-ioc?branch=master'><img src='https://coveralls.io/repos/github/sapphire-framework/sapphire-ioc/badge.svg?branch=master' alt='Coverage Status' /></a>
 </p>
-
-# Sapphire Container
 
 An IOC (Inversion of Control) container used internally in Sapphire Framework to register and resolve practically every service exposed by the framework. A container is a great idea when your services need boostrapping, such as configuration or dependency injection. By registering them in the container is not only convenient, but makes them very easy to swap with a different implementation.
 

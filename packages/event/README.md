@@ -1,4 +1,4 @@
-# Sapphire Event
+# Event
 
 A thin wrapper for Node's native [events](https://nodejs.org/api/events.html). Mostly to offer a few abstractions, a base class to be extended by event classes, and generally a tighter integration with Sapphire Framework. Other than that, it doesn't have any logic of its own and can be completely ignored if you don't like even such thin abstractions.
 

@@ -1,4 +1,4 @@
-# Sapphire Mail
+# Mail
 
 A fluent email sender built as a thin wrapper on top of [nodemailer](https://github.com/nodemailer/nodemailer). It handles almost everything nodemailer does, but presents them in a more intuitive package. Actually supports STMP and SES transports, with plans to provide more in the future.
 
@@ -112,7 +112,7 @@ const mail = new Mail(config, new Transport.SMTP())
 The `SES` transport connects to the SES API, a very reliable and affordable mail service. Please refer to the [AWS SDK docs](https://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/Config.html) for a list of configuration options, especially those in the section "Constructor Details".
 
 ```javascript
-const config = {{ 
+const config = {{
   accessKeyId: 'ACCESS_KEY',
   secretAccessKey: 'SECRET_KEY',
   region: 'us-east-1'

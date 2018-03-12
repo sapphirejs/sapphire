@@ -1,3 +1,3 @@
-# Sapphire Package
+# Commons
 
-A starter package serving as a template for future Sapphire packages. Not intended for public use.
+Common messages or functions for internal use.
