@@ -26,7 +26,7 @@ class SendWelcomeEmail {
 }
 
 event.on('user.registered', new SendWelcomeEmail().listen)
-event.emit('user.registered)
+event.emit('user.registered')
 ```
 
 An event can have multiple listeners:
@@ -43,7 +43,7 @@ evevnt.on('user.registered', [
 ])
 
 
-event.emit('user.registered)
+event.emit('user.registered')
 ```
 
 ## BaseEvent
