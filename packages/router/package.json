@@ -1,0 +1,33 @@
+{
+  "name": "@sapphirejs/router",
+  "version": "0.0.11",
+  "description": "Routing package for Sapphire Framework",
+  "license": "MIT",
+  "author": "Aleksander Koko <aleksanderkoko@gmail.com>",
+  "keywords": [
+    "sapphire",
+    "framework",
+    "router",
+    "http"
+  ],
+  "main": "index.js",
+  "engines": {
+    "node": ">= 8.3.0"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "test": "jest",
+    "lint": "eslint ./src",
+    "test-ci": "jest --coverage && cat ./coverage/lcov.info | coveralls"
+  },
+  "dependencies": {
+    "@sapphirejs/commons": "^0.0.11",
+    "is": "^3.2.1"
+  },
+  "devDependencies": {
+    "coveralls": "^3.0.0",
+    "jest": "^22.0.4"
+  }
+}
