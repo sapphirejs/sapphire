@@ -1,4 +1,5 @@
-const { Mail, Message, MailSendingFailed, MissingMailParams } = require('../index')
+const { Mail, MailSendingFailed, MissingMailParams } = require('../index')
+const Message = require('../lib/message')
 
 class MockTransport {
   constructor(shouldErr = false) {
