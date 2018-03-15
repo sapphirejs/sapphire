@@ -1,48 +1,52 @@
-const { Config, ConfigDirNotFound } = require('../index')
+const { Config } = require('../index')
 
-const directory = '/test/helpers/config'
+const cfg = {
+  key: 'value',
+  somekey: {
+    nestedKey: 'anothervalue'
+  }
+}
 
-test('reads an existing directory', () => {
-  const config = new Config(directory)
+test('reads a key', () => {
+  const config = new Config(cfg)
 
-  expect(config.get('app')).toBe(require('./helpers/config/app'))
+  expect(config.get('key')).toBe('value')
 })
 
-test('reads keys from an existing file', () => {
-  const config = new Config(directory)
+test('reads a deeply nested key', () => {
+  const config = new Config(cfg)
 
-  expect(config.get('app.key')).toBe('value')
-  expect(config.get('app.somekey.nestedKey')).toBe('anothervalue')
+  expect(config.get('somekey.nestedKey')).toBe('anothervalue')
+})
+
+test('returns the default value with an inexistant key', () => {
+  const config = new Config(cfg)
+
+  expect(config.get('i.dont.exist', 'default')).toBe('default')
 })
 
 test('returns null with an inexistent key', () => {
-  const config = new Config(directory)
+  const config = new Config(cfg)
 
   expect(config.get('')).toBe(null)
   expect(config.get('i.dont.exist')).toBe(null)
 })
 
 test("returns null when the key isn't a string", () => {
-  const config = new Config(directory)
+  const config = new Config(cfg)
 
   expect(config.get(['a', 'b'])).toBe(null)
 })
 
 test('returns null with an empty parameter', () => {
-  const config = new Config(directory, true)
+  const config = new Config(cfg)
 
   expect(config.get()).toBe(null)
 })
 
 test('returns boolean on check if key exists', () => {
-  const config = new Config(directory, true)
+  const config = new Config(cfg, true)
 
-  expect(config.has('app.key')).toBe(true)
-  expect(config.has('app.no.no')).toBe(false)
-})
-
-test("throws when the config directory doesn't exist", () => {
-  expect(() => {
-    new Config('/not_a_directory')
-  }).toThrow(ConfigDirNotFound)
+  expect(config.has('key')).toBe(true)
+  expect(config.has('no.no')).toBe(false)
 })
