@@ -1,14 +1,12 @@
 const { Route, RouteTypes, HttpMethods } = require('../index')
 const {
-  //PostController,
   CommentController,
   UserController,
   TaskController,
   TokenController,
 } = require('./helpers/FakeControllers')
-const { test, expect } = global
 
-test('Group Route exports 0 routes', () => {
+test('group Route exports 0 routes', () => {
   const route = new Route()
 
   route.group('/something', [], () => {})
@@ -16,7 +14,7 @@ test('Group Route exports 0 routes', () => {
   expect(route.export().length).toBe(0)
 })
 
-test('Group with middlewares', () => {
+test('group with middlewares', () => {
   const route = new Route()
 
   route.group('/something', ['fake_middleware'], () => {
@@ -28,7 +26,7 @@ test('Group with middlewares', () => {
   })
 })
 
-test('Every http method', () => {
+test('every http method', () => {
   const route = new Route()
 
   route.put('/something', () => {})
@@ -65,7 +63,7 @@ test('Every http method', () => {
   })
 })
 
-test('Http route with 3 arguments', () => {
+test('http route with 3 arguments', () => {
   const route = new Route()
 
   route.get('/something', [], () => {})
@@ -74,7 +72,7 @@ test('Http route with 3 arguments', () => {
   expect(routes.length).toBe(1)
 })
 
-test('Errors when the second parameter is not a function', () => {
+test('throws when the second parameter is not a function', () => {
   const route = new Route()
 
   expect(() => {
@@ -83,7 +81,7 @@ test('Errors when the second parameter is not a function', () => {
 
 })
 
-test('Errors when the second parameter is not a function', () => {
+test('throws when the second parameter is not a function', () => {
   const route = new Route()
 
   expect(() => {
@@ -92,7 +90,7 @@ test('Errors when the second parameter is not a function', () => {
 
 })
 
-test('Errors when the second parameter is not a function', () => {
+test('throws when the second parameter is not a function', () => {
   const route = new Route()
 
   expect(() => {
@@ -101,7 +99,7 @@ test('Errors when the second parameter is not a function', () => {
 
 })
 
-test('Group Route with a get Route inside', () => {
+test('group Route with a get Route inside', () => {
   const route = new Route()
 
   route.group('/something', () => {
@@ -130,7 +128,7 @@ test('Group Route with a get Route inside', () => {
   })
 })
 
-test('Resource usecase: controller', () => {
+test('resource usecase: controller', () => {
   const route = new Route()
 
   // Case length 1
@@ -148,7 +146,7 @@ test('Resource usecase: controller', () => {
   })
 })
 
-test('Resource usecase: middlewares, controller', () => {
+test('resource usecase: middlewares, controller', () => {
   const route = new Route()
 
   // Case length 2
@@ -166,7 +164,7 @@ test('Resource usecase: middlewares, controller', () => {
   })
 })
 
-test('Resource usecase: controller, callback', () => {
+test('resource usecase: controller, callback', () => {
   const route = new Route()
 
   route.resource('user', new UserController, () => {} )
@@ -183,7 +181,7 @@ test('Resource usecase: controller, callback', () => {
   })
 })
 
-test('Resource usecase: controller, options', () => {
+test('resource usecase: controller, options', () => {
   const route = new Route()
 
   route.resource('user', new UserController, { only: ['index'] })
@@ -204,7 +202,7 @@ test('Resource usecase: controller, options', () => {
   })
 })
 
-test('Resource usecase: controller, options', () => {
+test('resource usecase: controller, options', () => {
   const route = new Route()
 
   route.resource('token', new TokenController, { only: ['index']}, () => {
@@ -212,7 +210,7 @@ test('Resource usecase: controller, options', () => {
   })
 })
 
-test('Resource usecase: middlwares, controller, callback', () => {
+test('resource usecase: middlwares, controller, callback', () => {
   const route = new Route()
 
   route.resource('task', [], new TaskController, () => {
@@ -224,7 +222,7 @@ test('Resource usecase: middlwares, controller, callback', () => {
   expect(routes.length).toBe(7)
 })
 
-test('Resource usecase: middlwares, controller, option', () => {
+test('resource usecase: middlwares, controller, option', () => {
   const route = new Route()
 
   route.resource('comment', [], new CommentController, { only: ['index']})
@@ -245,7 +243,7 @@ test('Resource usecase: middlwares, controller, option', () => {
   })
 })
 
-test('Resource usecase: middlwares, controller, option, callback', () => {
+test('resource usecase: middlwares, controller, option, callback', () => {
   const route = new Route()
 
   route.resource('token', [], new TokenController, { only: ['index']}, () => {
@@ -268,7 +266,7 @@ test('Resource usecase: middlwares, controller, option, callback', () => {
   })
 })
 
-test('Resources throw error', () => {
+test('resources throw error', () => {
   const route = new Route()
 
   expect(() => {

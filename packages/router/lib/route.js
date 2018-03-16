@@ -1,250 +1,207 @@
-const { BadArguments } = require('@sapphirejs/commons')
 const is = require('is')
-const RouteTypes = require('./route-types')
-const HttpMethods = require('./http-methods')
+const routeTypes = require('./route-types')
+const httpMethods = require('./http-methods')
 const { acceptedMethods } = require('./http-resources')
+const errorMessages = require('./errors/messages')
+const InvalidRouteArgument = require('./errors/InvalidRouteArguments')
 
-const ErrorMessages = {
-  secondArgFunction: (method) =>
-    `When you are invoking a function like '${method}' with 2 arguments, the second one should be a function. For example: \n\n` +
-    `Route.group('/base-route', () => { \n  Route.get('/nested-route', ExampleController.index) \n})`,
-  secondArgObjectThirdFunc: (method) =>
-    `When you are invoking a function like '${method}' with 3 arguments, the second one should be an array of middlewares and the ` +
-    `third argument a function. For example: \n\n` +
-    `Route.group('/base-route', [], () => { \n  Route.get('/nested-route', ExampleController.index) \n})`,
-  // moreThanXArguments: (object, method, maxArguments) =>
-  //   `You can't invoke ${object}.${method} with more than ${maxArguments} ${maxArguments}`,
-  resourceShouldHaveOnlyKeys: () => ({
-    message: `When you are invoking a resource, the accepted methods are: [${Object.keys(acceptedMethods).reduce((accumulator, item) => accumulator + ", " + item , '')}]`
-  }),
-  controllerShouldHavemethod: (methodName) => ({
-    message: `When you are invoking a resource, the controller should have the method ${methodName}`
-  }),
-  // resourceCallbackShouldBeACallback: () => ({
-  //   message: `When you are using resources and trying to do nested groups, the last parameter should be a callback`
-  // }),
-  resourceTwoArgument: () => ({
-    message: `When you are using resources with 2 parameters, it should be like one of the following examples:`
-  }),
-  resourceThreeArguments: () => ({
-    message: `When you are using resources with 3 parameters, it should be like one of the following examples:`
-  }),
-  resourceFourArguments: () => ({
-    message: `When you are using resources with 4 parameters, it should be like one of the following examples:`
-  }),
-  resourceFiveArguments: () => ({
-    message: `When you are using resources with 5 parameters, it should be like one of the following examples:`
-  }),
-  resourceMoreThanFiveArguments: () => ({
-    message: `Resource can take up to 5 arguments but no more than that:`
-  })
-}
-
-const defaultResourceOption = { only: ['index', 'create', 'store', 'show', 'edit', 'update', 'destroy']}
+const defaultResourceOption = { only: ['index', 'create', 'store', 'show', 'edit', 'update', 'destroy'] }
 
 class Route {
-
-  constructor(){
-    this.__prefixes = []
-    this.__middlewares = []
-    this.__routes = []
+  constructor() {
+    this._prefixes = []
+    this._middlewares = []
+    this._routes = []
   }
 
   export() {
-    const route = this.__routes
-    this.__routes = []
+    const route = this._routes
+    this._routes = []
     return route
   }
 
-  get(prefix, ...otherParams) {
-    this.__buildHttp(prefix, otherParams, HttpMethods.get)
+  get(prefix, ...params) {
+    this._buildHttp(prefix, params, httpMethods.get)
   }
 
-  post(prefix, ...otherParams) {
-    this.__buildHttp(prefix, otherParams, HttpMethods.post)
+  post(prefix, ...params) {
+    this._buildHttp(prefix, params, httpMethods.post)
   }
 
-  put(prefix, ...otherParams) {
-    this.__buildHttp(prefix, otherParams, HttpMethods.put)
+  put(prefix, ...params) {
+    this._buildHttp(prefix, params, httpMethods.put)
   }
 
-  patch(prefix, ...otherParams) {
-    this.__buildHttp(prefix, otherParams, HttpMethods.patch)
+  patch(prefix, ...params) {
+    this._buildHttp(prefix, params, httpMethods.patch)
   }
 
-  delete(prefix, ...otherParams) {
-    this.__buildHttp(prefix, otherParams, HttpMethods.delete)
+  delete(prefix, ...params) {
+    this._buildHttp(prefix, params, httpMethods.delete)
   }
 
-  group(prefix, ...otherParams) {
-    this.__buildHttp(prefix, otherParams, 'group')
+  group(prefix, ...params) {
+    this._buildHttp(prefix, params, 'group')
   }
 
-  resource(prefix, ...otherParams) {
-    switch(otherParams.length) {
+  resource(prefix, ...params) {
+    switch (params.length) {
       case 1: {
-        const controller = otherParams[0]
-        if(is.object(controller)){
-          this.__buildHttpResource(prefix, [], controller, { only: Object.keys(acceptedMethods) })
-        }else{
-          throw new BadArguments(ErrorMessages.resourceTwoArgument())
+        const controller = params[0]
+        if (is.object(controller)) {
+          this._buildHttpResource(prefix, [], controller, { only: Object.keys(acceptedMethods) })
+        } else {
+          throw new InvalidRouteArgument(errorMessages.resourceTwoArgument())
         }
         break
       }
       case 2: {
-        const firstParam = otherParams[0]
-        const secondParam = otherParams[1]
-        if(is.array(firstParam) && is.object(secondParam)) {
+        const firstParam = params[0]
+        const secondParam = params[1]
+        if (is.array(firstParam) && is.object(secondParam)) {
           // middleware, controller
-          this.__buildHttpResource(prefix, firstParam, secondParam)
-        }else if(is.object(firstParam) && is.function(secondParam)) {
+          this._buildHttpResource(prefix, firstParam, secondParam)
+        } else if (is.object(firstParam) && is.function(secondParam)) {
           // controller, callback (nested resource)
-          this.__buildHttpResource(prefix, [], firstParam, )
-        }else if(is.object(firstParam) && is.object(secondParam)) {
+          this._buildHttpResource(prefix, [], firstParam, )
+        } else if (is.object(firstParam) && is.object(secondParam)) {
           // controller, options
-          this.__buildHttpResource(prefix, [], firstParam, secondParam)
+          this._buildHttpResource(prefix, [], firstParam, secondParam)
         } else {
-          throw new BadArguments(ErrorMessages.resourceThreeArguments())
+          throw new InvalidRouteArgument(errorMessages.resourceThreeArguments())
         }
         break
       }
       case 3: {
-        const firstParam = otherParams[0]
-        const secondParam = otherParams[1]
-        const thirdParam = otherParams[2]
-        if(is.object(firstParam) && is.object(secondParam) && is.function(thirdParam)) {
+        const firstParam = params[0]
+        const secondParam = params[1]
+        const thirdParam = params[2]
+        if (is.object(firstParam) && is.object(secondParam) && is.function(thirdParam)) {
           // controller, options, callback (nested resources)
-          this.__buildHttpResource(prefix, [], firstParam, secondParam, thirdParam)
-        }else if(is.array(firstParam) && is.object(secondParam) && is.function(thirdParam)) {
+          this._buildHttpResource(prefix, [], firstParam, secondParam, thirdParam)
+        } else if (is.array(firstParam) && is.object(secondParam) && is.function(thirdParam)) {
           // middlewares, controller, callback
-          this.__buildHttpResource(prefix, firstParam, secondParam, defaultResourceOption, thirdParam)
-        }else if(is.array(firstParam) && is.object(secondParam) && is.object(thirdParam)) {
+          this._buildHttpResource(prefix, firstParam, secondParam, defaultResourceOption, thirdParam)
+        } else if (is.array(firstParam) && is.object(secondParam) && is.object(thirdParam)) {
           // middlewares, controller, options
-          this.__buildHttpResource(prefix, firstParam, secondParam, thirdParam)
-        }else {
-          throw new BadArguments(ErrorMessages.resourceFourArguments())
+          this._buildHttpResource(prefix, firstParam, secondParam, thirdParam)
+        } else {
+          throw new InvalidRouteArgument(errorMessages.resourceFourArguments())
         }
         break
       }
       case 4: {
-        const firstParam = otherParams[0]
-        const secondParam = otherParams[1]
-        const thirdParam = otherParams[2]
-        const fourthParameter = otherParams[3]
-        if(is.array(firstParam) && is.object(secondParam) && is.object(thirdParam) && is.function(fourthParameter)) {
+        const firstParam = params[0]
+        const secondParam = params[1]
+        const thirdParam = params[2]
+        const fourthParameter = params[3]
+        if (is.array(firstParam) && is.object(secondParam) && is.object(thirdParam) && is.function(fourthParameter)) {
           // middlewares, controller, options, callback
-          this.__buildHttpResource(prefix, firstParam, secondParam, thirdParam, fourthParameter)
+          this._buildHttpResource(prefix, firstParam, secondParam, thirdParam, fourthParameter)
         } else {
-          throw new BadArguments(ErrorMessages.resourceFiveArguments())
+          throw new InvalidRouteArgument(errorMessages.resourceFiveArguments())
         }
         break
       }
       default:
-        throw new BadArguments(ErrorMessages.resourceMoreThanFiveArguments())
+        throw new InvalidRouteArgument(errorMessages.resourceMoreThanFiveArguments())
     }
   }
 
-  __buildHttpResource(prefix, middlewares, controller, options = defaultResourceOption, resourceCallback = null) {
-    this.__prefixes.push(prefix)
+  _buildHttpResource(prefix, middlewares, controller, options = defaultResourceOption, resourceCallback = null) {
+    this._prefixes.push(prefix)
 
-    // We only accept only for now, throw an exception if only is not on option
-
+    // We only accept only for now, throw an exception if only is not on option.
     options.only.forEach(item => {
-      if(!acceptedMethods.hasOwnProperty(item))
-        throw new BadArguments(ErrorMessages.resourceShouldHaveOnlyKeys().message)
+      if (!acceptedMethods.hasOwnProperty(item))
+        throw new InvalidRouteArgument(errorMessages.resourceShouldHaveOnlyKeys().message)
 
-      if(!Object.hasOwnProperty(item) && !is.function(controller[item]))
-        throw new BadArguments(ErrorMessages.controllerShouldHavemethod(item).message)
+      if (!Object.hasOwnProperty(item) && !is.function(controller[item]))
+        throw new InvalidRouteArgument(errorMessages.controllerShouldHavemethod(item).message)
 
-      this.__routes.push({
-        route: this.__buildPrefix(),
-        type: RouteTypes.httpController,
-        middlewares: [...this.__middlewares, ...middlewares],
+      this._routes.push({
+        route: this._buildPrefix(),
+        type: routeTypes.httpController,
+        middlewares: [...this._middlewares, ...middlewares],
         handler: controller[item],
         meta: {
           httpHandler: acceptedMethods[item]
         }
       })
 
-      if(resourceCallback !== null)
+      if (resourceCallback !== null)
         resourceCallback()
-
     })
 
-    this.__prefixes.pop()
+    this._prefixes.pop()
   }
 
-  __buildHttpMethod(prefix, cb, method, middlewares = []) {
-    this.__prefixes.push(prefix)
-    this.__routes.push({
-      route: this.__buildPrefix(),
-      type: RouteTypes.httpController,
-      middlewares: [...this.__middlewares, ...middlewares],
+  _buildHttpMethod(prefix, cb, method, middlewares = []) {
+    this._prefixes.push(prefix)
+    this._routes.push({
+      route: this._buildPrefix(),
+      type: routeTypes.httpController,
+      middlewares: [...this._middlewares, ...middlewares],
       handler: cb,
       meta: {
         httpHandler: method
       }
     })
-    this.__prefixes.pop()
+    this._prefixes.pop()
   }
 
-  __buildHttp(prefix, otherParams, method) {
-
-    if(otherParams.length === 1) {
-      const callback = otherParams[0]
-      if(is.function(callback)) {
-        this.__isHttpMethod(method)
-          ? this.__buildHttpMethod(prefix, callback, method)
-          : this.__buildGroup(prefix, callback)
+  _buildHttp(prefix, params, method) {
+    if (params.length === 1) {
+      const callback = params[0]
+      if (is.function(callback)) {
+        this._isHttpMethod(method)
+          ? this._buildHttpMethod(prefix, callback, method)
+          : this._buildGroup(prefix, callback)
       } else {
-        throw new BadArguments(ErrorMessages.secondArgFunction(method))
+        throw new InvalidRouteArgument(errorMessages.secondArgFunction(method))
       }
-    }else if(otherParams.length === 2) {
-      const middlwares = otherParams[0]
-      const callback = otherParams[1]
-      if(
+    } else if (params.length === 2) {
+      const middlwares = params[0]
+      const callback = params[1]
+      if (
         is.array(middlwares) &&
         is.function(callback)
-      ){
-        this.__isHttpMethod(method)
-          ? this.__buildHttpMethod(prefix, callback, method, middlwares)
-          : this.__buildGroup(prefix, callback, middlwares)
+      ) {
+        this._isHttpMethod(method)
+          ? this._buildHttpMethod(prefix, callback, method, middlwares)
+          : this._buildGroup(prefix, callback, middlwares)
       } else {
-        throw new BadArguments(ErrorMessages.secondArgObjectThirdFunc(method))
+        throw new InvalidRouteArgument(errorMessages.secondArgObjectThirdFunc(method))
       }
-    }else {
-      throw new BadArguments()
+    } else {
+      throw new InvalidRouteArgument()
     }
-
-
   }
 
-  __isHttpMethod(method) {
-    return Object.keys(HttpMethods).reduce(
-      (accumulator, key) =>
-        key === method ? true : accumulator
-      , false
-    )
+  _isHttpMethod(method) {
+    return Object
+      .keys(httpMethods)
+      .reduce((acc, key) => {
+        return key === method ? true : acc
+      }, false)
   }
 
-  __buildPrefix() {
-    return this.__prefixes.reduce(
-      (accumulator, prefix) =>
-        `/${accumulator}/${prefix}`.replace('//', '/').replace('//', '/')
-      , ""
-    )
+  _buildPrefix() {
+    return this._prefixes
+      .reduce((acc, prefix) => {
+        return `/${acc}/${prefix}`.replace('//', '/').replace('//', '/')
+      }, '')
   }
 
-  __buildGroup(prefix, cb, middlewares = []) {
-    this.__prefixes.push(prefix)
-    if(middlewares.length !== 0)
-      this.__middlewares.push(middlewares)
+  _buildGroup(prefix, cb, middlewares = []) {
+    this._prefixes.push(prefix)
+    if (middlewares.length !== 0)
+      this._middlewares.push(middlewares)
     cb()
-    if(middlewares.length !== 0)
-      this.__middlewares.pop()
-    this.__prefixes.pop()
+    if (middlewares.length !== 0)
+      this._middlewares.pop()
+    this._prefixes.pop()
   }
-
 }
 
 module.exports = Route

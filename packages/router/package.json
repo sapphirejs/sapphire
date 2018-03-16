@@ -23,7 +23,6 @@
     "test-ci": "jest --coverage && cat ./coverage/lcov.info | coveralls"
   },
   "dependencies": {
-    "@sapphirejs/commons": "^0.0.11",
     "is": "^3.2.1"
   },
   "devDependencies": {
