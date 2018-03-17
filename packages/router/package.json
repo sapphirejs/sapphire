@@ -22,9 +22,7 @@
     "lint": "eslint ./src",
     "test-ci": "jest --coverage && cat ./coverage/lcov.info | coveralls"
   },
-  "dependencies": {
-    "is": "^3.2.1"
-  },
+  "dependencies": {},
   "devDependencies": {
     "coveralls": "^3.0.0",
     "jest": "^22.0.4"

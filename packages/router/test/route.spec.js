@@ -1,307 +1,472 @@
-const { Route, RouteTypes, HttpMethods } = require('../index')
-const {
-  CommentController,
-  UserController,
-  TaskController,
-  TokenController,
-} = require('./helpers/FakeControllers')
-
-test('group Route exports 0 routes', () => {
-  const route = new Route()
-
-  route.group('/something', [], () => {})
-
-  expect(route.export().length).toBe(0)
-})
-
-test('group with middlewares', () => {
-  const route = new Route()
-
-  route.group('/something', ['fake_middleware'], () => {
-    route.group('/else', ['fake_middlwares_else'], () => {
-      route.get('/foo', () => {
-
-      })
-    })
-  })
-})
+const { Route, InvalidRouteArguments } = require('../index')
+const settings = require('../lib/settings')
+const { UserController, CommentController, TaskController } = require('./helpers/FakeControllers')
 
 test('every http method', () => {
   const route = new Route()
-
-  route.put('/something', () => {})
-  route.patch('/something', () => {})
-  route.delete('/something', () => {})
+  const cb = () => {}
+  
+  route.get('/path', cb)
+  route.post('/path', cb)
+  route.put('/path', cb)
+  route.patch('/path', cb)
+  route.delete('/path', cb)
 
   const routes = route.export()
-  const firstRoute = routes[0]
-  const secondRoute = routes[1]
-  const thirdRoute = routes[2]
 
-  expect(firstRoute).toMatchObject({
-    route: '/something',
-    type: RouteTypes.httpController,
+  expect(routes.length).toBe(5)
+
+  expect(routes[0]).toMatchObject({
+    type: settings.type.http,
+    path: '/path',
+    middleware: null,
+    handler: cb,
     meta: {
-      httpHandler: HttpMethods.put
+      method: settings.method.get
     }
   })
 
-  expect(secondRoute).toMatchObject({
-    route: '/something',
-    type: RouteTypes.httpController,
+  expect(routes[1]).toMatchObject({
+    type: settings.type.http,
+    path: '/path',
+    middleware: null,
+    handler: cb,
     meta: {
-      httpHandler: HttpMethods.patch
+      method: settings.method.post
     }
   })
 
-  expect(thirdRoute).toMatchObject({
-    route: '/something',
-    type: RouteTypes.httpController,
+  expect(routes[2]).toMatchObject({
+    type: settings.type.http,
+    path: '/path',
+    middleware: null,
+    handler: cb,
     meta: {
-      httpHandler: HttpMethods.delete
+      method: settings.method.put
+    }
+  })
+
+  expect(routes[3]).toMatchObject({
+    type: settings.type.http,
+    path: '/path',
+    middleware: null,
+    handler: cb,
+    meta: {
+      method: settings.method.patch
+    }
+  })
+
+  expect(routes[4]).toMatchObject({
+    type: settings.type.http,
+    path: '/path',
+    middleware: null,
+    handler: cb,
+    meta: {
+      method: settings.method.delete
     }
   })
 })
 
-test('http route with 3 arguments', () => {
+test('http route with only a callback', () => {
   const route = new Route()
+  const cb = () => { }
 
-  route.get('/something', [], () => {})
+  route.get('/path', cb)
 
   const routes = route.export()
+
   expect(routes.length).toBe(1)
+  expect(routes[0].handler).toEqual(cb)
+  expect(routes[0].middleware).toBeNull()
 })
 
-test('throws when the second parameter is not a function', () => {
+test('http route with middleware and callback', () => {
+  const route = new Route()
+  const cb = () => {}
+  const mw = () => {}
+
+  route.get('/path', mw, cb)
+
+  const routes = route.export()
+  
+  expect(routes[0].middleware).toEqual(mw)
+  expect(routes[0].handler).toEqual(cb)
+})
+
+test('http route with array of middleware', () => {
+  const route = new Route()
+  const mw = [() => {}, () => {}]
+
+  route.get('/path', mw, () => {})
+
+  const routes = route.export()
+
+  expect(routes[0].middleware).toEqual(mw)
+})
+
+test('throws when http route does not have a callback', () => {
   const route = new Route()
 
   expect(() => {
-    route.get('/something', [])
-  }).toThrow()
-
+    route.get('/path')
+  }).toThrow(InvalidRouteArguments)
 })
 
-test('throws when the second parameter is not a function', () => {
+test('throws when http route callback is not a function', () => {
   const route = new Route()
 
   expect(() => {
-    route.get('/something', [], null)
-  }).toThrow()
-
+    route.get('/path', 'hi')
+  }).toThrow(InvalidRouteArguments)
 })
 
-test('throws when the second parameter is not a function', () => {
+test('throws when http route middleware is not a function', () => {
   const route = new Route()
 
   expect(() => {
-    route.get('/something', [], null, null, null)
-  }).toThrow()
-
+    route.get('/path', 'hi', () => {})
+  }).toThrow(InvalidRouteArguments)
 })
 
-test('group Route with a get Route inside', () => {
+test('throws when http route middleware is not an array of functions', () => {
   const route = new Route()
 
-  route.group('/something', () => {
-    route.get('/lol', () => {
+  expect(() => {
+    route.get('/path', ['hi', 10], () => { })
+  }).toThrow(InvalidRouteArguments)
+})
 
-    })
+test('http group', () => {
+  const route = new Route()
+  const cb = () => {}
 
-    route.post('/hey', () => {
-
-    })
+  route.group('/path', (route) => {
+    route.get('/hi', cb)
+    route.post('/hey', cb)
   })
 
   const routes = route.export()
 
   expect(routes.length).toBe(2)
 
-  const firstRoute = routes[0]
-
-  expect(firstRoute).toMatchObject({
-    route: '/something/lol',
-    type: RouteTypes.httpController,
-    middlewares: [],
+  expect(routes[0]).toMatchObject({
+    type: settings.type.http,
+    path: '/path/hi',
+    middleware: null,
+    handler: cb,
     meta: {
-      httpHandler: HttpMethods.get
+      method: settings.method.get
+    }
+  })
+
+  expect(routes[1]).toMatchObject({
+    type: settings.type.http,
+    path: '/path/hey',
+    middleware: null,
+    handler: cb,
+    meta: {
+      method: settings.method.post
     }
   })
 })
 
-test('resource usecase: controller', () => {
+test('http group combines middleware', () => {
   const route = new Route()
+  const cb = () => {}
+  const mw = () => {}
+  const mwGroup = () => {}
 
-  // Case length 1
-  route.resource('comment', new CommentController)
-
-  const exportedRoutes = route.export()
-  const firstRoute = exportedRoutes[0]
-  expect(firstRoute).toMatchObject({
-    route: '/comment',
-    type: RouteTypes.httpController,
-    middlewares: [],
-    meta: {
-      httpHandler: HttpMethods.get
-    }
-  })
-})
-
-test('resource usecase: middlewares, controller', () => {
-  const route = new Route()
-
-  // Case length 2
-  route.resource('user', [], new UserController)
-
-  const routes = route.export()
-  const firstRoute = routes[0]
-  expect(firstRoute).toMatchObject({
-    route: '/user',
-    type: RouteTypes.httpController,
-    middlewares: [],
-    meta: {
-      httpHandler: HttpMethods.get
-    }
-  })
-})
-
-test('resource usecase: controller, callback', () => {
-  const route = new Route()
-
-  route.resource('user', new UserController, () => {} )
-
-  const routes = route.export()
-  const firstRoute = routes[0]
-  expect(firstRoute).toMatchObject({
-    route: '/user',
-    type: RouteTypes.httpController,
-    middlewares: [],
-    meta: {
-      httpHandler: HttpMethods.get
-    }
-  })
-})
-
-test('resource usecase: controller, options', () => {
-  const route = new Route()
-
-  route.resource('user', new UserController, { only: ['index'] })
-
-  const routes = route.export()
-
-  expect(routes.length).toBe(1)
-
-  const firstRoute = routes[0]
-
-  expect(firstRoute).toMatchObject({
-    route: '/user',
-    type: RouteTypes.httpController,
-    middlewares: [],
-    meta: {
-      httpHandler: HttpMethods.get
-    }
-  })
-})
-
-test('resource usecase: controller, options', () => {
-  const route = new Route()
-
-  route.resource('token', new TokenController, { only: ['index']}, () => {
-
-  })
-})
-
-test('resource usecase: middlwares, controller, callback', () => {
-  const route = new Route()
-
-  route.resource('task', [], new TaskController, () => {
-
+  route.group('/path', mwGroup, (route) => {
+    route.get('/hi', mw, cb)
+    route.get('/hi', [mw, mw], cb)
   })
 
   const routes = route.export()
 
-  expect(routes.length).toBe(7)
+  expect(routes[0].middleware).toEqual([mwGroup, mw])
+  expect(routes[1].middleware).toEqual([mwGroup, mw, mw])
 })
 
-test('resource usecase: middlwares, controller, option', () => {
+test('http group combines array middleware', () => {
   const route = new Route()
+  const cb = () => {}
+  const mw = () => {}
+  const mwGroup = () => {}
 
-  route.resource('comment', [], new CommentController, { only: ['index']})
-
-  const routes = route.export()
-
-  expect(routes.length).toBe(1)
-
-  const firstRoute = routes[0]
-
-  expect(firstRoute).toMatchObject({
-    route: '/comment',
-    type: RouteTypes.httpController,
-    middlewares: [],
-    meta: {
-      httpHandler: HttpMethods.get
-    }
-  })
-})
-
-test('resource usecase: middlwares, controller, option, callback', () => {
-  const route = new Route()
-
-  route.resource('token', [], new TokenController, { only: ['index']}, () => {
-
+  route.group('/path', [mwGroup, mwGroup], (route) => {
+    route.get('/hi', mw, cb)
+    route.get('/hi', [mw, mw], cb)
   })
 
   const routes = route.export()
 
-  expect(routes.length).toBe(1)
-
-  const firstRoute = routes[0]
-
-  expect(firstRoute).toMatchObject({
-    route: '/token',
-    type: RouteTypes.httpController,
-    middlewares: [],
-    meta: {
-      httpHandler: HttpMethods.get
-    }
-  })
+  expect(routes[0].middleware).toEqual([mwGroup, mwGroup, mw])
+  expect(routes[1].middleware).toEqual([mwGroup, mwGroup, mw, mw])
 })
 
-test('resources throw error', () => {
+test('empty http group does not build routes', () => {
+  const route = new Route()
+
+  route.group('/path', () => {})
+
+  const routes = route.export()
+
+  expect(routes.length).toBe(0)
+})
+
+test('throws when http group does not have a callback', () => {
   const route = new Route()
 
   expect(() => {
-    route.resource('token', null)
-  }).toThrow()
+    route.group('/path')
+  }).toThrow(InvalidRouteArguments)
+})
+
+test('throws when http group callback is not a function', () => {
+  const route = new Route()
 
   expect(() => {
-    route.resource('token', null, null)
-  }).toThrow()
+    route.group('/path', 'hi')
+  }).toThrow(InvalidRouteArguments)
+})
+
+test('throws when http group middleware is not a function', () => {
+  const route = new Route()
 
   expect(() => {
-    route.resource('token', null, null, null)
-  }).toThrow()
+    route.group('/path', 'hi', () => {})
+  }).toThrow(InvalidRouteArguments)
+})
+
+test('throws when http group middleware is not an array of functions', () => {
+  const route = new Route()
 
   expect(() => {
-    route.resource('token', null, null, null, null)
-  }).toThrow()
+    route.group('/path', ['hi', 10], () => { })
+  }).toThrow(InvalidRouteArguments)
+})
+
+test('http resource', () => {
+  const route = new Route()
+  const controller = new UserController()
+
+  route.resource('/users', controller)
+
+  expect(route.export()).toEqual([
+    {
+      type: settings.type.http,
+      path: '/users',
+      middleware: null,
+      handler: controller.index,
+      meta: {
+        method: settings.method.get
+      }
+    },
+    {
+      type: settings.type.http,
+      path: '/users/:id/edit',
+      middleware: null,
+      handler: controller.edit,
+      meta: {
+        method: settings.method.get
+      }
+    },
+    {
+      type: settings.type.http,
+      path: '/users/new',
+      middleware: null,
+      handler: controller.store,
+      meta: {
+        method: settings.method.get
+      }
+    },
+    {
+      type: settings.type.http,
+      path: '/users/:id',
+      middleware: null,
+      handler: controller.show,
+      meta: {
+        method: settings.method.get
+      }
+    },
+    {
+      type: settings.type.http,
+      path: '/users',
+      middleware: null,
+      handler: controller.create,
+      meta: {
+        method: settings.method.post
+      }
+    },
+    {
+      type: settings.type.http,
+      path: '/users/:id',
+      middleware: null,
+      handler: controller.update,
+      meta: {
+        method: settings.method.put
+      }
+    },
+    {
+      type: settings.type.http,
+      path: '/users/:id',
+      middleware: null,
+      handler: controller.destroy,
+      meta: {
+        method: settings.method.delete
+      }
+    }
+  ])
+})
+
+test('http resource with middleware', () => {
+  const route = new Route()
+  const controller = new UserController()
+  const mw = () => {}
+
+  route.resource('/users', mw, controller)
+
+  const routes = route.export()
+
+  expect(routes[0].middleware).toEqual(mw)
+})
+
+test('http resource with array of middleware', () => {
+  const route = new Route()
+  const controller = new UserController()
+  const mw = [() => {}, () => {}]
+
+  route.resource('/users', mw, controller)
+
+  const routes = route.export()
+
+  expect(routes[0].middleware).toEqual(mw)
+})
+
+test('http resource with "only" option', () => {
+  const route = new Route()
+  const controller = new UserController()
+
+  route.resource('/users', controller, { only: ['index', 'create'] })
+
+  expect(route.export()).toEqual([
+    {
+      type: settings.type.http,
+      path: '/users',
+      middleware: null,
+      handler: controller.index,
+      meta: {
+        method: settings.method.get
+      }
+    },
+    {
+      type: settings.type.http,
+      path: '/users',
+      middleware: null,
+      handler: controller.create,
+      meta: {
+        method: settings.method.post
+      }
+    },
+  ])
+})
+
+test('http resource with "except" option', () => {
+  const route = new Route()
+  const controller = new UserController()
+
+  route.resource('/users', controller, { except: ['index', 'edit', 'store', 'show', 'create'] })
+
+  expect(route.export()).toEqual([
+    {
+      type: settings.type.http,
+      path: '/users/:id',
+      middleware: null,
+      handler: controller.update,
+      meta: {
+        method: settings.method.put
+      }
+    },
+    {
+      type: settings.type.http,
+      path: '/users/:id',
+      middleware: null,
+      handler: controller.destroy,
+      meta: {
+        method: settings.method.delete
+      }
+    },
+  ])
+})
+
+test('http resource with just a callback', () => {
+  const route = new Route()
+
+  route.resource('/users', new UserController(), () => {})
+
+  expect(route.export().length).toBe(7)
+})
+
+test('nested http resource', () => {
+  const route = new Route()
+  const userController = new UserController()
+  const commentController = new CommentController()
+
+  route.resource('/users', userController, { only: ['index'] }, (route) => {
+    route.resource('/comments', commentController, { only: ['update'] })
+  })
+
+  expect(route.export()).toEqual([
+    {
+      type: settings.type.http,
+      path: '/users',
+      middleware: null,
+      handler: userController.index,
+      meta: {
+        method: settings.method.get
+      }
+    },
+    {
+      type: settings.type.http,
+      path: '/users/comments/:id',
+      middleware: null,
+      handler: commentController.update,
+      meta: {
+        method: settings.method.put
+      }
+    },
+  ])
+})
+
+test('throws when resource controller does not implement a method', () => {
+  const route = new Route()
+  const controller = new TaskController()
 
   expect(() => {
-    route.resource('token', null, null, null, null, null)
-  }).toThrow()
+    route.resource('/users', controller, { only: ['index'] })
+  }).toThrow(InvalidRouteArguments)
+})
+
+test('throws when http resource controller is not an object', () => {
+  const route = new Route()
 
   expect(() => {
-    route.resource('token', new TokenController, { only: ['something']})
-  }).toThrow()
+    route.resource('/users', 'hi')
+  }).toThrow(InvalidRouteArguments)
+})
+
+test('throws when http resource middleware is not a function', () => {
+  const route = new Route()
 
   expect(() => {
-    route.resource('something', new (class Something {}), { only: ['index']})
-  }).toThrow()
+    route.resource('/users', 'hi', new UserController())
+  }).toThrow(InvalidRouteArguments)
+})
+
+test('throws when http resource middleware is not an array of functions', () => {
+  const route = new Route()
 
   expect(() => {
-    route.resource('something', new (class Something { get index() {}}), { only: ['index']})
-  }).toThrow()
-
-  expect(() => {
-    route.resource('token', new TokenController, null)
-  }).toThrow()
+    route.resource('/users', ['hi', 10], new UserController())
+  }).toThrow(InvalidRouteArguments)
 })

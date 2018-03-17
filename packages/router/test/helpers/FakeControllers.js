@@ -1,34 +1,4 @@
-class PostController {
-  index() {
-
-  }
-
-  create() {
-
-  }
-
-  store() {
-
-  }
-
-  show() {
-
-  }
-
-  edit() {
-
-  }
-
-  update() {
-
-  }
-
-  destroy() {
-
-  }
-}
-
-class TokenController {
+class UserController {
   index() {
 
   }
@@ -88,70 +58,10 @@ class CommentController {
   }
 }
 
-class UserController {
-  index() {
-
-  }
-
-  create() {
-
-  }
-
-  store() {
-
-  }
-
-  show() {
-
-  }
-
-  edit() {
-
-  }
-
-  update() {
-
-  }
-
-  destroy() {
-
-  }
-}
-
-class TaskController {
-  index() {
-
-  }
-
-  create() {
-
-  }
-
-  store() {
-
-  }
-
-  show() {
-
-  }
-
-  edit() {
-
-  }
-
-  update() {
-
-  }
-
-  destroy() {
-
-  }
-}
+class TaskController {}
 
 module.exports = {
-  PostController,
-  CommentController,
   UserController,
-  TaskController,
-  TokenController,
+  CommentController,
+  TaskController
 }

@@ -1,11 +1,7 @@
 const Route = require('./lib/route')
-const HttpMethods = require('./lib/http-methods')
-const RouteTypes = require('./lib/route-types')
-const InvalidRouteArguments = require('./lib/errors/InvalidRouteArguments')
+const InvalidRouteArguments = require('./lib/errors/invalid-route-arguments')
 
 module.exports = {
   Route,
-  HttpMethods,
-  RouteTypes,
   InvalidRouteArguments
 }
