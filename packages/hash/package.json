@@ -1,0 +1,33 @@
+{
+  "name": "@sapphirejs/hash",
+  "version": "0.0.11",
+  "description": "Hashing Package for Sapphire Framework",
+  "license": "MIT",
+  "author": "Fadion Dashi <jonidashi@gmail.com>",
+  "keywords": [
+    "hashing",
+    "crypto",
+    "sapphire",
+    "framework"
+  ],
+  "main": "index.js",
+  "engines": {
+    "node": ">= 8.3.0"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "test": "jest",
+    "lint": "eslint ./src",
+    "test-ci": "jest --coverage && cat ./coverage/lcov.info | coveralls"
+  },
+  "dependencies": {
+    "argon2": "^0.17.2",
+    "bcrypt": "^1.0.3"
+  },
+  "devDependencies": {
+    "coveralls": "^3.0.0",
+    "jest": "^22.0.4"
+  }
+}
