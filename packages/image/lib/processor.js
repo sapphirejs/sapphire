@@ -2,12 +2,12 @@ const sharp = require('sharp')
 
 /**
  * Image processor.
- * 
+ *
  * @class Processor
  */
 class Processor {
   /**
-   * @param {*} path 
+   * @param {*} path
    */
   constructor(options) {
     this._image = sharp(options)
@@ -17,10 +17,10 @@ class Processor {
    * Resizes an image by keeping aspect
    * ratio and not allowing to get larger
    * than its original size.
-   * 
+   *
    * @public
-   * @param {int} width  
-   * @param {int} height  
+   * @param {int} width
+   * @param {int} height
    * @returns {Processor}
    */
   resize(width, height) {
@@ -34,9 +34,9 @@ class Processor {
    * Resizes only the width of an image and
    * sets the height automatically.
    * Same as: resize(width, null)
-   * 
+   *
    * @public
-   * @param {int} width  
+   * @param {int} width
    * @returns {Processor}
    */
   widen(width) {
@@ -47,9 +47,9 @@ class Processor {
    * Resizes only the height of an image and
    * sets the width automatically.
    * Same as: resize(null, height)
-   * 
+   *
    * @public
-   * @param {int} height  
+   * @param {int} height
    * @returns {Processor}
    */
   heighten(height) {
@@ -60,9 +60,9 @@ class Processor {
    * Crops the image with one of the gravity
    * or strategy constants. Must be called
    * after resize().
-   * 
+   *
    * @public
-   * @param {int} gravity  
+   * @param {int} gravity
    * @returns {Processor}
    */
   crop(gravity = 0) {
@@ -73,7 +73,7 @@ class Processor {
   /**
    * Ignores aspect ratio. Must be called
    * after resize().
-   * 
+   *
    * @public
    * @returns {Processor}
    */
@@ -86,7 +86,7 @@ class Processor {
    * Allows an image to be resized more than
    * its original size. Must be called after
    * resize().
-   * 
+   *
    * @public
    * @returns {Processor}
    */
@@ -100,9 +100,9 @@ class Processor {
    * deegres. Angle must be a multiple of 90.
    * If omitted, EXIF data will be used if
    * present to automatically rotate the image.
-   * 
+   *
    * @public
-   * @param {int} angle  
+   * @param {int} angle
    * @returns {Processor}
    */
   rotate(angle = null) {
@@ -112,9 +112,9 @@ class Processor {
 
   /**
    * Flips image in the X or Y axis.
-   * 
+   *
    * @public
-   * @param {string} axis  
+   * @param {string} axis
    * @returns {Processor}
    */
   flip(axis = 1) {
@@ -129,7 +129,7 @@ class Processor {
   /**
    * Sharpens the image using a mild,
    * but fast algorithm.
-   * 
+   *
    * @public
    * @returns {Processor}
    */
@@ -143,9 +143,9 @@ class Processor {
    * it performs a mild, but fast blur.
    * Amount must be a number between
    * 0 and 100.
-   * 
+   *
    * @public
-   * @param {float} amount  
+   * @param {float} amount
    * @returns {Processor}
    */
   blur(amount = null) {
@@ -162,30 +162,30 @@ class Processor {
   /**
    * Extends the image filling the space
    * with the background() color.
-   * 
+   *
    * @public
-   * @param {Object} extend  
+   * @param {Object} extend
    * @returns {Processor}
    */
   extend(extend = {}) {
-    extend = {
-      ...extend,
+    const options = {
       ...{
         top: 0,
         bottom: 0,
         left: 0,
         right: 0
-      }
+      },
+      ...extend
     }
 
-    this._image.extend(extend)
+    this._image.extend(options)
     return this
   }
 
   /**
    * Merges the alpha transparency channel
    * with the background, if provided.
-   * 
+   *
    * @public
    * @returns {Processor}
    */
@@ -197,9 +197,9 @@ class Processor {
   /**
    * Applies gamma correction. Gamma must be
    * a number between 1.0 and 3.0.
-   * 
+   *
    * @public
-   * @param {float} value  
+   * @param {float} value
    * @returns {Processor}
    */
   gamma(value = 2.2) {
@@ -209,7 +209,7 @@ class Processor {
 
   /**
    * Converts the image to its negative.
-   * 
+   *
    * @public
    * @returns {Processor}
    */
@@ -220,7 +220,7 @@ class Processor {
 
   /**
    * Enhances the image contrast.
-   * 
+   *
    * @public
    * @returns {Processor}
    */
@@ -232,21 +232,21 @@ class Processor {
   /**
    * Sets a background color. Useful when using
    * extend() or flatten().
-   * 
+   *
    * @public
-   * @param {Object} color  
+   * @param {Object} color
    * @returns {Processor}
    */
   background(color = {}) {
-    color = { ...color, ...{ r: 0, g: 0, b: 0, alpha: 1 } }
-    this._image.background(color)
+    const options = { ...{ r: 0, g: 0, b: 0, alpha: 1 }, ...color }
+    this._image.background(options)
     return this
   }
 
   /**
    * Converts the image to 8-bit grayscale,
    * 256 colors.
-   * 
+   *
    * @public
    * @returns {Processor}
    */
@@ -260,9 +260,9 @@ class Processor {
    * one. The overlay can be positioned using one
    * of the gravity constants, and the top and
    * left offsets.
-   * 
+   *
    * @public
-   * @param {string} path  
+   * @param {string} path
    * @param {Object} options
    * @returns {Processor}
    */
@@ -273,7 +273,7 @@ class Processor {
 
   /**
    * Image information.
-   * 
+   *
    * @public
    * @returns {Promise}
    */
@@ -283,7 +283,7 @@ class Processor {
 
   /**
    * Exports to JPEG.
-   * 
+   *
    * @public
    * @param {string} path
    * @param {Object} options
@@ -295,7 +295,7 @@ class Processor {
 
   /**
    * Exports to PNG.
-   * 
+   *
    * @public
    * @param {string} path
    * @param {Object} options
@@ -307,7 +307,7 @@ class Processor {
 
   /**
    * Exports to WebP.
-   * 
+   *
    * @public
    * @param {string} path
    * @param {Object} options
@@ -320,7 +320,7 @@ class Processor {
   /**
    * Exports to a file by inferring the format
    * from the extension.
-   * 
+   *
    * @public
    * @param {string} path
    * @param {Object} options
@@ -332,7 +332,7 @@ class Processor {
 
   /**
    * Raw sharp instance.
-   * 
+   *
    * @returns {Object}
    */
   get raw() {
