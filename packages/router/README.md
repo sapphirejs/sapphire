@@ -1,107 +1,102 @@
 # Router
 
-A fluent Router package that can be consumed with express or other routing packages.
+A Route builder that produces a consumable data structure. It servers as a middleman between the client defined routes and consumers, which in turn use those routes in Express, socket server, console commands, or whatever the usecase is.
 
 
-## Quick usage
+## Usage
 
-This package only generates a data structure that can be consumed by consumers.
+The router handles exactly what Express or any other router excepts, with a few additions like groups and resources. For a quick overview:
 
 ```javascript
-const { Route } = require('@sapphire/router')
+const { Route } = require('@sapphirejs/router')
 
 const route = new Route()
 
-route.group('/group', () => {
-  route.get('/something', () => {
+route.get('/user/:id', () => {})
 
-  })
-})
-
-route.export() // returns a data structure with routes
+route.export()
 /**
  * [
  *    {
- *      route: '/group/something',
- *      type: 'http-controller',
- *      middlewares: [],
+ *      path: '/users/:id',
+ *      type: 'http',
+ *      middleware: [],
  *      handler: [Function],
- *      meta: { httpHandler: 'get' }
+ *      meta: { method: 'get' }
  *    }
  * ]
  */
 ```
 
-Most of the packages treat the routing as a solid monolith solution. This package makes the process of building routes transparent and testable too. As it receives input data and generates a data structure, it is transparent on how it works, no magic here.
+## Middleware
 
+Middleware are also pretty much typical. They can be passed as a single function or an array of functions:
 
-## Usage
-
-```javascript
-/**
- * Sample controllers
- */
-
-class SimpleController {
-  createPost() {
-
-  }
-}
-
-class TokenController {
-  index() {
-
-  }
-}
-
-class UserController {
-  index() {}
-  create() {}
-  store() {}
-  show() {}
-  edit() {}
-  update() {}
-  destroy() {}
-}
-
-class PhotoController {
-  create() {
-
-  }
-}
+```js
+route.get('/tasks', () => {}, () => {})
+route.get('/jobs', [() => {}, () => {}], () => {})
 ```
 
-```javascript
-const { Route } = require('@sapphire/router')
+## Groups
 
+Groups are very useful for routes with a common prefix, such as an `admin` panel:
 
-
-const route = new Route()
-
-route.post('/task', [/* put your custom middlware here */], new SimpleController)
-
-route.group('/something', ['fake_middleware'], () => {
-  route.group('/else', () => {
-    route.get('/foo', () => {})
-    route.patch('/foo', () => {})
-  })
+```js
+route.group('/admin', (route) => {
+  // /admin/dashboard
+  route.get('/dashboard', () => {})
+  // /admin/statistics
+  route.get('/statistics', () => {})
 })
+```
 
-route.resource('token', new TokenController, { only: ['index']})
+A group can have middleware applied to every sub route. Those will be combined with the route's own middleware, where the group's ones take precedence:
 
-route.resource('user', ['some_middlware_here'], new UserController, () => {
-  route.resource('photo', new PhotoController, { only: ['create']})
+```js
+route.group('/admin', () => {}, (route) => {
+  route.get('/dashboard', () => {}, () => {})
+  route.get('/statistics', () => {})
 })
-
 ```
 
-If your controller hasn't a method that is required by the router, we will throw an error so errors don't rise on "run-time".
+## Resources
 
+Resources are a shortcut for creating CRUD routes that respond to HTTP verbs. They define a number of paths that are expected to be handled by controller methods. If you imagine a `users` resource, it will generate the following paths with the expected controller methods:
 
-## Beyond HTTP routes
+Path | Verb | Method
+--- | --- | ---
+/users | GET | index
+/users/:id/edit | GET | edit
+/users/new | GET | store
+/users/:id | GET | show
+/users | POST | create
+/users/:id | PUT | update
+/users/:id | DELETE | destroy
 
-This package is not only limited to HTTP routes but instead treats the HTTP as one of the ways the application receives data from the user. You can use it to build data structures about Console commands and WebSocket Channels.
+To generate the above, simply create a `UserController` class that implements all the methods and call it with:
 
-```javascript
-// Build this usecase
+```js
+route.resource('/users', new UserController())
 ```
+
+The default behaviour is to include both restful and non-restful methods for editing and creating data, but you can easily define which methods you want with the `only` option:
+
+```js
+route.resource('/users', new UserController(), { only: ['index', 'show', 'create'] })
+```
+
+Or exclude the methods you don't need with the `except` option:
+
+```js
+route.resource('/users', new UserController(), { except: ['edit', 'store'] })
+```
+
+Finally, resources can be nested to create relationship between data. Let's imagine the `user` has `comments`, which we want to define as a sub-resource:
+
+```js
+route.resource('/users', new UserController(), (route) => {
+  route.resource('/comments', new ComentController())
+})
+```
+
+It will generate every route for `/users`, but also for `/users/comments`.
