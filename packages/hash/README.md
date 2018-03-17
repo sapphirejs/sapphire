@@ -6,13 +6,13 @@ Generates and compares hashes using [bcrypt](https://github.com/kelektiv/node.bc
 
 The main `Hash` class takes an algorithm as a parameter, either `Algorithm.Bcrypt` or `Algorithm.Argon2`.
 
-To generate a hash with:
+To generate a hash:
 
 ```js
 const { Hash, Algorithm } = require('@sapphirejs/hash')
 
 const hasher = new Hash(new Algorithm.Bcrypt())
-const hash = await hasher.generate('sTr0nG_pA55)
+const hash = await hasher.generate('sTr0nG_pA55')
 ```
 
 To compare a plaintext password against a hash:
