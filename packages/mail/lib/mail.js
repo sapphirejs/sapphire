@@ -28,23 +28,24 @@ class Mail {
    *
    * @public
    * @param {string} content
-   * @returns {Mail}
+   * @returns {Promise}
    * @throws {MissingMailParams} Email headers incomplete
    * @throws {MailSendingFailed} Fail to send email
    */
-  async send(body, cb) {
+  send(body, cb) {
     const params = typeof cb === 'function' ? cb(new Message()).message : {}
     const message = this._mergeDefaults(params)
     const messageWithBody = this._addBody(message, body)
+    const validationError = this._validateMessage(messageWithBody)
 
-    let { err } = this._validateMessage(messageWithBody)
-    if (err) throw new MissingMailParams(err)
+    if (validationError)
+      throw new MissingMailParams(validationError)
 
     return this._transport.send(this._config, messageWithBody)
-      .then((info) => {
+      .then(info => {
         return info
       })
-      .catch((err) => {
+      .catch(err => {
         throw new MailSendingFailed(`Failed to send mail. System response: ${err.message}`)
       })
   }
@@ -96,15 +97,15 @@ class Mail {
    */
   _validateMessage(message) {
     if (!message.from)
-      return { err: `Missing 'from' parameter. Either set it as a config option with key 'from' or call the from() function.` }
+      return 'Missing "from" parameter. Either set it as a config option with key "from" or call the from() function.'
 
     if (!message.to.length)
-      return { err: `Missing 'to' parameter. Set it with the to() function.` }
+      return 'Missing "to" parameter. Set it with the to() function.'
 
     if (!message.text && !message.html)
-      return { err: `Missing mail message. Set it with the text() or html() functions.` }
+      return 'Missing mail message. Set it with the text() or html() functions.'
 
-    return { err: null }
+    return false
   }
 }
 
