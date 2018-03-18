@@ -71,10 +71,22 @@ describe('mail', () => {
     const sent = mail.send('hello', (message) => message.to('to@domain.com'))
     await expect(sent)
       .resolves
-      .toEqual(expect.objectContaining({
+      .toMatchObject({
         from: 'from@domain.com',
         replyTo: 'from@domain.com'
-      }))
+      })
+  })
+
+  test("sets html body", async () => {
+    expect.assertions(1)
+
+    const mail = new Mail({}, new MockTransport())
+    const sent = mail.send('hello', (message) => message.from('from@domain.com').to('to@domain.com'))
+    await expect(sent)
+      .resolves
+      .toMatchObject({
+        html: 'hello'
+      })
   })
 
   test("sets html and text body", async () => {
@@ -84,10 +96,10 @@ describe('mail', () => {
     const sent = mail.send({ html: '<p>Hello</p>', text: 'Hello' }, (message) => message.from('from@domain.com').to('to@domain.com'))
     await expect(sent)
       .resolves
-      .toEqual(expect.objectContaining({
+      .toMatchObject({
         html: '<p>Hello</p>',
         text: 'Hello'
-      }))
+      })
   })
 
   test('throws when transport is not provided', () => {

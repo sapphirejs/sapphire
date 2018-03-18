@@ -59,13 +59,9 @@ class Mail {
    * @returns {Object}
    */
   _addBody(message, body) {
-    const messageWithBody = { ...message }
-
-    body === Object(body)
-      ? Object.assign(messageWithBody, { html: body.html, text: body.text })
-      : messageWithBody.html = body
-
-    return messageWithBody
+    return typeof body === 'object'
+      ? { ...message, ...{ html: body.html, text: body.text } }
+      : { ...message, ...{ html: body } }
   }
 
   /**
