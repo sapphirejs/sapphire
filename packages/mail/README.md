@@ -12,7 +12,7 @@ const { Mail, Transport } = require('@sapphirejs/mail')
 const config = {/* nodemailer configuration */}
 const mail = new Mail(config, new Transport.SMTP())
 await mail.send('<p>Hi</p>', (message) => {
-  return message
+  message
     .from('from@domain.com')
     .replyTo('from@domain.com')
     .to('to@domain.com')
@@ -72,14 +72,14 @@ The same applies to `header`, `attachment`, and `alternative`.
 
 ### Async
 
-`Mail.send()` is an `async` function that returns a Promise and can be set to `await`. It will throw a `MailSendingFailed` if sending fails, or a `MissingMailParams` when the message headers aren't set correctly (ie: missing from field). Otherwise, it will return an info object with the details of the success sending.
+`Mail.send()` is an `async` function that returns a Promise and can be set to `await`. It will throw a `MailSendingFailed` if sending fails, or a `MissingMailParams` when the message headers aren't set correctly (ie: missing from field). Otherwise, it will return an info object with the details of the transport.
 
 ```javascript
 try {
   const mail = new Mail(config, new Transport.SMTP())
   const result = await mail
     .send('<p>Hello</p>', (message) => {
-      return message
+      message
         .from('from@domain.com')
         .to('to@domain.com')
         .subject('Testing')

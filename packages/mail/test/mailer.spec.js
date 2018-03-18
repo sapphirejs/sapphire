@@ -108,12 +108,23 @@ describe('mail', () => {
     }).toThrow(BadMailTransport)
   })
 
-  test('throws when callback is not provided', async () => {
+  test('throws when callback in send() is missing', async () => {
     expect.assertions(1)
 
     try {
       const mail = new Mail({}, new MockTransport())
       await mail.send('hello')
+    } catch (err) {
+      expect(err).toBeInstanceOf(MissingMailParams)
+    }
+  })
+
+  test('throws when callback in send() is not a valid function', async () => {
+    expect.assertions(1)
+
+    try {
+      const mail = new Mail({}, new MockTransport())
+      await mail.send('hello', 'not.a.function')
     } catch (err) {
       expect(err).toBeInstanceOf(MissingMailParams)
     }

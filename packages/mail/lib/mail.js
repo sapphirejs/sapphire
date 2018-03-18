@@ -33,7 +33,13 @@ class Mail {
    * @throws {MailSendingFailed} Fail to send email
    */
   send(body, cb) {
-    const params = typeof cb === 'function' ? cb(new Message()).message : {}
+    if (!cb || typeof cb !== 'function')
+      throw new MissingMailParams('Mail expects a valid callback that builds the message.')
+
+    const builder = new Message()
+    cb(builder)
+
+    const params = builder.message || {}
     const message = this._mergeDefaults(params)
     const messageWithBody = this._addBody(message, body)
     const validationError = this._validateMessage(messageWithBody)
