@@ -1,4 +1,4 @@
-const { Intl, MissingLocale, MissingLocaleKey, InvalidLocaleMessage } = require('../index')
+const { Intl, MissingLocale, InvalidLocaleMessage } = require('../index')
 
 let locales = {
   'en-us': {
@@ -24,6 +24,13 @@ test('deep nested key is found and formatted correctly', () => {
   const message = intl.format('first.second.third', { name: 'John' })
 
   expect(message).toBe('Hi John from deep nested key')
+})
+
+test('returns null when key is not found', () => {
+  const intl = new Intl(locales, 'en-us')
+  const message = intl.format('not.found', { name: 'John' })
+
+  expect(message).toBeNull()
 })
 
 test('locale is changed after initialization', () => {
@@ -61,13 +68,6 @@ test("throws when locale doesn't exist", () => {
     const intl = new Intl(locales, 'en-us')
     intl.in('fr').format('welcome', { name: 'John' })
   }).toThrow(MissingLocale)
-})
-
-test("throws when locale key doesn't exist", () => {
-  expect(() => {
-    const intl = new Intl(locales, 'en-us')
-    intl.format('unknown', { name: 'John' })
-  }).toThrow(MissingLocaleKey)
 })
 
 test('throws when locale message is not correctly formatted', () => {

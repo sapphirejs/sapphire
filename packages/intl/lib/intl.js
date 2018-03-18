@@ -1,7 +1,6 @@
 const IntlMessage = require('intl-messageformat')
 const objectPath = require('object-path')
 const MissingLocale = require('./errors/missing-locale')
-const MissingLocaleKey = require('./errors/missing-locale-key')
 const InvalidLocaleMessage = require('./errors/invalid-locale-message')
 
 /**
@@ -29,7 +28,6 @@ class Intl {
    * @param {Object} data
    * @returns {string}
    * @throws {MissingLocale} When locale doesn't exist
-   * @throws {MissingLocaleKey} When locale key doesn't exist
    * @throws {InvalidLocaleMessage} when locale message is not well formatted
    */
   format(path, data) {
@@ -44,8 +42,7 @@ class Intl {
     const localePath = `${locale}.${path}`
     const value = objectPath.get(this._locales, localePath)
 
-    if (!value)
-      throw new MissingLocaleKey(`Locale key '${path}' not found for locale '${locale}'`)
+    if (!value) return null
 
     try {
       const intl = new IntlMessage(value, locale)
