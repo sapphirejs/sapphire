@@ -12,10 +12,12 @@ class Intl {
   /**
    * @param {Object} locales
    * @param {string} locale
+   * @param {string} fallback
    */
-  constructor(locales, locale) {
+  constructor(locales, locale, fallback = null) {
     this._locales = locales
     this._locale = locale
+    this._fallback = fallback
     this._tempLocale = null
   }
 
@@ -42,7 +44,12 @@ class Intl {
     const localePath = `${locale}.${path}`
     const value = objectPath.get(this._locales, localePath)
 
-    if (!value) return null
+    if (!value) {
+      // Check the path in the fallback locale, if any.
+      if (this._fallback)
+        return this.in(this._fallback).format(path, data)
+      return null
+    }
 
     try {
       const intl = new IntlMessage(value, locale)

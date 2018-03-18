@@ -57,6 +57,13 @@ test('locale is reported correctly', () => {
   expect(intl.locale).toBe('en-us')
 })
 
+test('unfound locale key is retrieved from fallback', () => {
+  const intl = new Intl(locales, 'sq-al', 'en-us')
+  const message = intl.format('first.second.third', { name: 'John' })
+
+  expect(message).toBe('Hi John from deep nested key')
+})
+
 test("throws when locale doesn't exist", () => {
   expect(() => {
     const intl = new Intl(locales, 'en-us')
@@ -67,6 +74,13 @@ test("throws when locale doesn't exist", () => {
   expect(() => {
     const intl = new Intl(locales, 'en-us')
     intl.in('fr').format('welcome', { name: 'John' })
+  }).toThrow(MissingLocale)
+})
+
+test("throws when fallback locale doesn't exist", () => {
+  expect(() => {
+    const intl = new Intl(locales, 'en-us', 'fr')
+    intl.format('not.found', { name: 'John' })
   }).toThrow(MissingLocale)
 })
 

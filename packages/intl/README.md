@@ -65,3 +65,11 @@ let intl = new Intl(locales, 'en-us')
 intl.in('sq-al').format('welcome', { name: 'Xhon' })
 // Miresevjen Xhon
 ```
+
+Finally, you can set a fallback locale during initialization. That locale will be used to search the key if it doesn't exist in the main one.
+
+```javascript
+new Intl(locales, 'sq-al', 'en-us')
+  .format('first.second.third', { name: 'John' })
+// Hi John from deep nested key
+```
