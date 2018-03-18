@@ -13,7 +13,7 @@ class Validator {
    * @param {Object} schema
    */
   constructor(fields, schema) {
-    let { error } = Joi.validate(fields, schema, { abortEarly: false })
+    const { error } = Joi.validate(fields, schema, { abortEarly: false })
     this._errors = {}
     this._prepareErrors(error)
   }
@@ -44,7 +44,7 @@ class Validator {
    * @returns {boolean}
    */
   get passes() {
-    return !Object.keys(this._errors).length
+    return Object.keys(this._errors).length === 0
   }
 
   /**
