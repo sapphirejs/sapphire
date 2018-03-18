@@ -287,7 +287,7 @@ class Processor {
    * @public
    * @param {string} path
    * @param {Object} options
-   * @returns {Processor}
+   * @returns {Promise}
    */
   jpeg(path, options = { quality: 90, progressive: true }) {
     return this._image.jpeg(options).toFile(path)
@@ -299,7 +299,7 @@ class Processor {
    * @public
    * @param {string} path
    * @param {Object} options
-   * @returns {Processor}
+   * @returns {Promise}
    */
   png(path, options = { progressive: true }) {
     return this._image.jpeg(options).toFile(path)
@@ -311,7 +311,7 @@ class Processor {
    * @public
    * @param {string} path
    * @param {Object} options
-   * @returns {Processor}
+   * @returns {Promise}
    */
   webp(path, options = { quality: 90 }) {
     return this._image.jpeg(options).toFile(path)
@@ -324,7 +324,7 @@ class Processor {
    * @public
    * @param {string} path
    * @param {Object} options
-   * @returns {Processor}
+   * @returns {Promise}
    */
   save(path) {
     return this._image.toFile(path)

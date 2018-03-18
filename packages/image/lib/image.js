@@ -1,26 +1,35 @@
 const Processor = require('./processor')
+const MissingProcessor = require('./errors/missing-processor')
 
 class Image {
   /**
    * Starts image manipulation with a path
    * to a system file.
-   * 
-   * @param {string} path 
-   * @param {function} cb 
+   *
+   * @param {string} path
+   * @param {function} cb
    * @returns {Promise}
+   * @throws {MissingProcessor} when callback is missing
    */
   open(path, cb) {
+    if (!cb || typeof cb !== 'function')
+      throw new MissingProcessor('Image expects a callback to process images.')
+
     return cb(new Processor(path))
   }
 
   /**
    * Creates an empty image.
-   * 
-   * @param {Object} options 
+   *
+   * @param {Object} options
    * @param {function} cb
-   * @returns {Promise} 
+   * @returns {Promise}
+   * @throws {MissingProcessor} when callback is missing
    */
   create(options, cb) {
+    if (!cb || typeof cb !== 'function')
+      throw new MissingProcessor('Image expects a callback to process images.')
+
     options = {
       ...options,
       ...{
@@ -35,7 +44,7 @@ class Image {
 
   /**
    * Gravity constants.
-   * 
+   *
    * @returns {Object}
    */
   static get gravity() {
@@ -54,7 +63,7 @@ class Image {
 
   /**
    * Strategy constants.
-   * 
+   *
    * @returns {Object}
    */
   static get strategy() {
@@ -66,7 +75,7 @@ class Image {
 
   /**
    * Axis constants.
-   * 
+   *
    * @returns {Object}
    */
   static get axis() {
