@@ -275,10 +275,9 @@ class Processor {
    * Image information.
    *
    * @public
-   * @returns {Promise}
    */
   metadata() {
-    return this._image.metadata()
+    this._image = this._image.metadata()
   }
 
   /**
@@ -287,10 +286,9 @@ class Processor {
    * @public
    * @param {string} path
    * @param {Object} options
-   * @returns {Promise}
    */
   jpeg(path, options = { quality: 90, progressive: true }) {
-    return this._image.jpeg(options).toFile(path)
+    this._image = this._image.jpeg(options).toFile(path)
   }
 
   /**
@@ -299,10 +297,9 @@ class Processor {
    * @public
    * @param {string} path
    * @param {Object} options
-   * @returns {Promise}
    */
   png(path, options = { progressive: true }) {
-    return this._image.jpeg(options).toFile(path)
+    this._image = this._image.jpeg(options).toFile(path)
   }
 
   /**
@@ -311,10 +308,9 @@ class Processor {
    * @public
    * @param {string} path
    * @param {Object} options
-   * @returns {Promise}
    */
   webp(path, options = { quality: 90 }) {
-    return this._image.jpeg(options).toFile(path)
+    this._image = this._image.jpeg(options).toFile(path)
   }
 
   /**
@@ -324,10 +320,9 @@ class Processor {
    * @public
    * @param {string} path
    * @param {Object} options
-   * @returns {Promise}
    */
   save(path) {
-    return this._image.toFile(path)
+    this._image = this._image.toFile(path)
   }
 
   /**

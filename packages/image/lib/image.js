@@ -15,7 +15,9 @@ class Image {
     if (!cb || typeof cb !== 'function')
       throw new MissingProcessor('Image expects a callback to process images.')
 
-    return cb(new Processor(path))
+    const processor = new Processor(path)
+    cb(processor)
+    return processor.raw
   }
 
   /**
@@ -39,7 +41,10 @@ class Image {
         background: { r: 0, g: 0, b: 0, alpha: 255 }
       }
     }
-    return cb(new Processor({ create: options }))
+
+    const processor = new Processor({ create: options })
+    cb(processor)
+    return processor.raw
   }
 
   /**

@@ -16,8 +16,8 @@ We'll resize an image, rotate it, apply a grayscale effect, and finally save it 
 const Image = require('@sapphirejs/image')
 
 const image = new Image()
-await image.open('path/to/image.jpg', (image) => {
-  return image
+await image.open('path/to/image.jpg', image => {
+  image
     .resize(600, 400)
     .rotate(90)
     .grayscale()
@@ -37,8 +37,8 @@ await image.create({
   height: 100,
   channels: 4,
   background: { r: 255, g: 0, b: 0, alpha: 128 }
-}, (image) => {
-  return image
+}, image => {
+  image
     .png('red.png')
 })
 ```
@@ -53,7 +53,7 @@ In the callback, you can access the sharp instance with the `raw` property:
 
 ```js
 await image.open('path/to/image.jpg', (image) => {
-  return image
+  image
     .raw
     .trim()
     .normalize()
@@ -69,12 +69,12 @@ We're calling them arbitrarily image composers, but they're nothing but a patter
 ```js
 // helper file
 const resizeThumbnail = (output) => {
-  return (image) => {
-    return image
-    .resize(100, 100)
-    .enhance()
-    .sharpen()
-    .jpeg(output)
+  return image => {
+    image
+      .resize(100, 100)
+      .enhance()
+      .sharpen()
+      .jpeg(output)
   }
 }
 ```
