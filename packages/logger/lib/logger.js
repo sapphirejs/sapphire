@@ -1,4 +1,5 @@
 const winston = require('winston')
+const BadLoggerTransport = require('./errors/bad-logger-transport')
 
 /**
  * Logger as a thin interface to Winston.
@@ -9,8 +10,12 @@ class Logger {
   /**
    * @param {Object} config
    * @param {Object} transport
+   * @throws {BadLoggerTransport} when transport is not valid
    */
   constructor(config, transport) {
+    if (!transport || typeof transport !== 'object')
+      throw new BadLoggerTransport('Use a valid Logger transport')
+
     this._config = config
     this._transport = transport
     this._level = 'debug'
