@@ -11,7 +11,7 @@ const { Mail, Transport } = require('@sapphirejs/mail')
 
 const config = {/* nodemailer configuration */}
 const mail = new Mail(config, new Transport.SMTP())
-await mail.send('<p>Hi</p>', (message) => {
+await mail.send('<p>Hi</p>', message => {
   message
     .from('from@domain.com')
     .replyTo('from@domain.com')
@@ -78,7 +78,7 @@ The same applies to `header`, `attachment`, and `alternative`.
 try {
   const mail = new Mail(config, new Transport.SMTP())
   const result = await mail
-    .send('<p>Hello</p>', (message) => {
+    .send('<p>Hello</p>', message => {
       message
         .from('from@domain.com')
         .to('to@domain.com')
