@@ -161,9 +161,9 @@ class Message {
    * @param {string[]} args
    */
   _addAddress(key, args) {
-    if (!args || args.length == 0) return
+    if (!args || !args.length) return
 
-    const value = args.length == 1
+    const value = args.length === 1
       ? args[0]
       : { name: args[0], address: args[1] }
 
