@@ -1,6 +1,7 @@
 const Message = require('./message')
 const MailSendingFailed = require('./errors/mail-sending-failed')
 const MissingMailParams = require('./errors/missing-mail-params')
+const BadMailTransport = require('./errors/bad-mail-transport')
 
 /**
  * Mail class.
@@ -12,8 +13,12 @@ class Mail {
   /**
    * @param {Object} config
    * @param {Object} transport
+   * @throws {BadMailTransport} if transport is not a valid object
    */
   constructor(config, transport) {
+    if (!transport || typeof transport !== 'object')
+      throw new BadMailTransport('Use a valid Mail transport.')
+
     this._config = config
     this._transport = transport
   }

@@ -1,4 +1,4 @@
-const { Mail, MailSendingFailed, MissingMailParams } = require('../index')
+const { Mail, MailSendingFailed, MissingMailParams, BadMailTransport } = require('../index')
 const Message = require('../lib/message')
 
 class MockTransport {
@@ -88,6 +88,12 @@ describe('mail', () => {
         html: '<p>Hello</p>',
         text: 'Hello'
       }))
+  })
+
+  test('throws when transport is not provided', () => {
+    expect(() => {
+      new Mail({})
+    }).toThrow(BadMailTransport)
   })
 
   test('throws when callback is not provided', async () => {
