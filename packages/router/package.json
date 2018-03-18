@@ -1,6 +1,6 @@
 {
   "name": "@sapphirejs/router",
-  "version": "0.0.11",
+  "version": "0.0.12",
   "description": "Routing package for Sapphire Framework",
   "license": "MIT",
   "author": "Aleksander Koko <aleksanderkoko@gmail.com>",
@@ -22,7 +22,6 @@
     "lint": "eslint ./src",
     "test-ci": "jest --coverage && cat ./coverage/lcov.info | coveralls"
   },
-  "dependencies": {},
   "devDependencies": {
     "coveralls": "^3.0.0",
     "jest": "^22.0.4"

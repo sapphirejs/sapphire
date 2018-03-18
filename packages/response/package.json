@@ -1,6 +1,6 @@
 {
   "name": "@sapphirejs/response",
-  "version": "0.0.11",
+  "version": "0.0.12",
   "description": "Response Wrapper for Sapphire Framework",
   "license": "MIT",
   "author": "Fadion Dashi <jonidahsi@gmail.com>",
