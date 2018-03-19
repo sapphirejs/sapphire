@@ -79,15 +79,31 @@ class Cache {
   }
 
   /**
+   * Set the value of the key only if it
+   * already exists.
+   *
+   * @public
+   * @param {string} key
+   * @param {*} value
+   * @param {int} minutes
+   * @returns {Promise}
+   */
+  async override(key, value, minutes = 60) {
+    if (await this.has(key))
+      return this.set(key, value, minutes)
+    return null
+  }
+
+  /**
    * Gets the key and deletes it.
    *
    * @public
    * @param {string} key
-   * @returns {Promise} with the value of key
+   * @returns {*}
    */
-  pop(key) {
-    const value = this.get(key)
-    this.delete(key)
+  async pop(key) {
+    const value = await this.get(key)
+    await this.delete(key)
     return value
   }
 

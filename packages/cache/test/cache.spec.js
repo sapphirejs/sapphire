@@ -36,6 +36,16 @@ test('decrements a key', () => {
   expect(cache.decrement('i', 2)).toBe(12)
 })
 
+test('overrides a key', async () => {
+  const cache = new Cache(new Transport.Memory())
+  cache.set('name', 'test')
+  await cache.override('name', 'overriden')
+  await cache.override('not.found', 'overriden')
+
+  expect(cache.get('name')).toBe('overriden')
+  expect(cache.get('not.found')).toBeNull()
+})
+
 test('key exists', () => {
   const cache = new Cache(new Transport.Memory())
   cache.set('name', 'test')
@@ -55,11 +65,11 @@ test('deletes a key', () => {
   expect(cache.has('name')).toBe(false)
 })
 
-test('retrieves and deletes a key', () => {
+test('retrieves and deletes a key', async () => {
   const cache = new Cache(new Transport.Memory())
   cache.set('name', 'test')
 
-  expect(cache.pop('name')).toBe('test')
+  expect(await cache.pop('name')).toBe('test')
   expect(cache.has('name')).toBe(false)
 })
 
