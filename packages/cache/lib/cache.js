@@ -24,7 +24,7 @@ class Cache {
    * @param {string} key
    * @returns {Promise} with the value of key
    */
-  get(key) {
+  async get(key) {
     return this._transport.get(key)
   }
 
@@ -37,7 +37,7 @@ class Cache {
    * @param {int} minutes
    * @returns {Promise}
    */
-  set(key, value, minutes = 60) {
+  async set(key, value, minutes = 60) {
     return this._transport.set(key, value, minutes)
   }
 
@@ -50,7 +50,7 @@ class Cache {
    * @param {*} value
    * @returns {Promise}
    */
-  forever(key, value) {
+  async forever(key, value) {
     return this.set(key, value, 60 * 24 * 30 * 365)
   }
 
@@ -62,7 +62,7 @@ class Cache {
    * @param {int} amount
    * @returns {Promise} with the new value of key
    */
-  increment(key, amount = 1) {
+  async increment(key, amount = 1) {
     return this._transport.increment(key, amount)
   }
 
@@ -74,7 +74,7 @@ class Cache {
    * @param {int} amount
    * @returns {Promise} with the new value of key
    */
-  decrement(key, amount = 1) {
+  async decrement(key, amount = 1) {
     return this._transport.decrement(key, amount)
   }
 
@@ -130,7 +130,7 @@ class Cache {
    * @param {string} key
    * @returns {Promise} boolean
    */
-  has(key) {
+  async has(key) {
     return this._transport.has(key)
   }
 
@@ -141,7 +141,7 @@ class Cache {
    * @param {string} key
    * @returns {Promise}
    */
-  delete(key) {
+  async delete(key) {
     return this._transport.delete(key)
   }
 
@@ -151,7 +151,7 @@ class Cache {
    * @public
    * @returns {Promise}
    */
-  flush() {
+  async flush() {
     return this._transport.flush()
   }
 }
