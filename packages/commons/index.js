@@ -1,7 +1,7 @@
-const BadArguments = require('./lib/bad-arguments')
 const readConfigDir = require('./lib/read-config-dir')
+const is = require('./lib/is')
 
 module.exports = {
-  BadArguments,
-  readConfigDir
+  readConfigDir,
+  is
 }
