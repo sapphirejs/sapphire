@@ -26,23 +26,23 @@ The `Redis` transport automatically executes `JSON.stringify()` when setting val
 
 A list of the supported methods:
 
-** get(key) ** Retrieve `key` from the cache or null if it doesn't exist.
+**get(key)** Retrieve `key` from the cache or null if it doesn't exist.
 
-** set(key, value, minutes = 60) ** Set the `key` to `value` with an expiry of `minutes`.
+**set(key, value, minutes = 60)** Set the `key` to `value` with an expiry of `minutes`.
 
-** forever(key, value) ** Set the `key` to `value` with a big expiry time.
+**forever(key, value)** Set the `key` to `value` with a big expiry time.
 
-** increment(key, amount = 1) ** Increment the number value under `key` with `amount`.
+**increment(key, amount = 1)** Increment the number value under `key` with `amount`.
 
-** decrement(key, amount = 1) ** Decrement the number value under `key` with `amount`.
+**decrement(key, amount = 1)** Decrement the number value under `key` with `amount`.
 
-** pop(key) ** Retrieve `key` and delete it.
+**pop(key)** Retrieve `key` and delete it.
 
-** has(key) ** Check if `key` exists in the cache.
+**has(key)** Check if `key` exists in the cache.
 
-** delete(key) ** Delete `key` from the cache.
+**delete(key)** Delete `key` from the cache.
 
-** flush() ** Delete all the keys from the cache.
+**flush()** Delete all the keys from the cache.
 
 ## Custom Transports
 
