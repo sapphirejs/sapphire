@@ -1,6 +1,6 @@
 {
   "name": "@sapphirejs/common",
-  "version": "0.0.12",
+  "version": "0.0.13",
   "description": "Common utilities that are used throughout Sapphire packages",
   "license": "MIT",
   "author": "Aleksander Koko <aleksanderkoko@gmail>",
