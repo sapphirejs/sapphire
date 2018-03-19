@@ -32,7 +32,7 @@ class Mail {
    * @throws {MissingMailParams} Email headers incomplete
    * @throws {MailSendingFailed} Fail to send email
    */
-  send(body, cb) {
+  async send(body, cb) {
     if (!cb || typeof cb !== 'function')
       throw new MissingMailParams('Mail expects a valid callback that builds the message.')
 
