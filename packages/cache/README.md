@@ -38,6 +38,8 @@ A list of the supported methods:
 
 **override(key, value, minutes = 60)** Set the `key` to `value` only if it already exists in the cache.
 
+**add(key, value, minutes = 60)** Set the `key` to `value` only if it doesn't already exist.
+
 **pop(key)** Retrieve `key` and delete it.
 
 **has(key)** Check if `key` exists in the cache.

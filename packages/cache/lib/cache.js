@@ -55,7 +55,7 @@ class Cache {
   }
 
   /**
-   * Increment a key by amount.
+   * Increments a key by amount.
    *
    * @public
    * @param {string} key
@@ -67,7 +67,7 @@ class Cache {
   }
 
   /**
-   * Decrement a key by amount.
+   * Decrements a key by amount.
    *
    * @public
    * @param {string} key
@@ -79,7 +79,7 @@ class Cache {
   }
 
   /**
-   * Set the value of the key only if it
+   * Sets the value of the key only if it
    * already exists.
    *
    * @public
@@ -90,6 +90,22 @@ class Cache {
    */
   async override(key, value, minutes = 60) {
     if (await this.has(key))
+      return this.set(key, value, minutes)
+    return null
+  }
+
+  /**
+   * Sets the value of the key only if it
+   * doesn't exist.
+   *
+   * @public
+   * @param {string} key
+   * @param {*} value
+   * @param {int} minutes
+   * @returns {Promise}
+   */
+  async add(key, value, minutes = 60) {
+    if (!await this.has(key))
       return this.set(key, value, minutes)
     return null
   }

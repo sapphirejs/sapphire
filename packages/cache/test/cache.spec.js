@@ -46,6 +46,16 @@ test('overrides a key', async () => {
   expect(cache.get('not.found')).toBeNull()
 })
 
+test('adds a key only if it does not exist', async () => {
+  const cache = new Cache(new Transport.Memory())
+  cache.set('name', 'test')
+  await cache.add('name', 'hello')
+  await cache.add('email', 'hi@there')
+
+  expect(cache.get('name')).toBe('test')
+  expect(cache.get('email')).toBe('hi@there')
+})
+
 test('key exists', () => {
   const cache = new Cache(new Transport.Memory())
   cache.set('name', 'test')
