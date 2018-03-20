@@ -8,7 +8,7 @@ A simple configuration package mostly to be used internally for Sapphire Framewo
 $ npm install --save @sapphirejs/config
 ```
 
-Imagining we have a configuration file under with the following contents:
+Imagine we have a configuration file with the following contents:
 
 ```js
 const cfg = {
@@ -19,7 +19,7 @@ const cfg = {
 }
 ```
 
-We can access those configuration options by simply:
+We can access those configuration options:
 
 ```js
 const Config = require('@sapphirejs/config')
