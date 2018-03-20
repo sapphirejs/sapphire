@@ -5,6 +5,10 @@ A Route builder that produces a consumable data structure. It servers as a middl
 
 ## Usage
 
+```
+$ npm install --save @sapphirejs/router
+```
+
 The router handles exactly what Express or any other router expects, with a few additions like groups and resources. For a quick overview:
 
 ```javascript
