@@ -1,0 +1,30 @@
+{
+  "name": "@sapphirejs/request",
+  "version": "0.0.12",
+  "description": "A Request Wrapper for Sapphire Framework",
+  "license": "MIT",
+  "author": "Fadion Dashi <jonidashi@gmail.com>",
+  "keywords": [
+    "request",
+    "sapphire",
+    "framework"
+  ],
+  "main": "index.js",
+  "engines": {
+    "node": ">= 8.3.0"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "test": "jest",
+    "lint": "eslint ./src",
+    "test-ci": "jest --coverage && cat ./coverage/lcov.info | coveralls"
+  },
+  "dependencies": {
+  },
+  "devDependencies": {
+    "coveralls": "^3.0.0",
+    "jest": "^22.0.4"
+  }
+}
