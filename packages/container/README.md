@@ -8,6 +8,12 @@
 
 An IOC (Inversion of Control) container used internally in Sapphire Framework to register and resolve practically every service exposed by the framework. A container is a great idea when your services need boostrapping, such as configuration or dependency injection. By registering them in the container is not only convenient, but makes them very easy to swap with a different implementation.
 
+## Installation
+
+```
+$ npm install --save @sapphirejs/container
+```
+
 ## Registering Services
 
 You can register a service using the `register` method and passing a callback where you initialize that service. That callback may be a simple function or, more probably, a class instance. In the example below imagine you have a `Mail` class that you need to register in the container:
