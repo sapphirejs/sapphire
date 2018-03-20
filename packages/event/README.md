@@ -4,6 +4,10 @@ A thin wrapper for Node's native [events](https://nodejs.org/api/events.html). M
 
 ## Usage
 
+```
+$ npm install --save @sapphirejs/event
+```
+
 As you'd expect, events can be listened with `on` and emmited with `emit`.
 
 ```js
