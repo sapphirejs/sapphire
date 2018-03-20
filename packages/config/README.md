@@ -4,6 +4,10 @@ A simple configuration package mostly to be used internally for Sapphire Framewo
 
 ## Usage
 
+```
+$ npm install --save @sapphirejs/config
+```
+
 Imagining we have a configuration file under with the following contents:
 
 ```js
