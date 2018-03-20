@@ -4,6 +4,10 @@ A fluent email sender built as a thin wrapper on top of [nodemailer](https://git
 
 ## Usage
 
+```
+$ npm install --save @sapphirejs/mail
+```
+
 We'll start with an exhaustive example that includes pretty much every option.
 
 ```javascript
