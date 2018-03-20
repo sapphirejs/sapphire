@@ -7,7 +7,7 @@ A thin wrapper for Node's native [events](https://nodejs.org/api/events.html). M
 As you'd expect, events can be listened with `on` and emmited with `emit`.
 
 ```js
-const { Event } = required('@sapphirejs/event')
+const { Event } = require('@sapphirejs/event')
 
 const event = new Event()
 event.on('some.event', () => {
@@ -51,7 +51,7 @@ event.emit('user.registered')
 The `BaseEvent` class enforces the usage of the `listen` method and has the capabilities to be extended by the framework, like injecting a context object as argument. It is completely optional to use, but if you decide on it, this is how it's used:
 
 ```js
-const { Event, BaseEvent } = required('@sapphirejs/event')
+const { Event, BaseEvent } = require('@sapphirejs/event')
 
 class SendWelcomeEmail extends BaseEvent {
   listen(userId) {
