@@ -4,6 +4,10 @@ Generates and compares hashes using [bcrypt](https://github.com/kelektiv/node.bc
 
 ## Usage
 
+```
+$ npm install --save @sapphirejs/hash
+```
+
 The main `Hash` class takes an algorithm as a parameter, either `Algorithm.Bcrypt` or `Algorithm.Argon2`.
 
 To generate a hash:
