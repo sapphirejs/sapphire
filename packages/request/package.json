@@ -1,6 +1,6 @@
 {
   "name": "@sapphirejs/request",
-  "version": "0.0.12",
+  "version": "0.0.14",
   "description": "A Request Wrapper for Sapphire Framework",
   "license": "MIT",
   "author": "Fadion Dashi <jonidashi@gmail.com>",
@@ -20,8 +20,6 @@
     "test": "jest",
     "lint": "eslint ./src",
     "test-ci": "jest --coverage && cat ./coverage/lcov.info | coveralls"
-  },
-  "dependencies": {
   },
   "devDependencies": {
     "coveralls": "^3.0.0",
