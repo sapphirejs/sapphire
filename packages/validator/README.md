@@ -2,6 +2,12 @@
 
 A very thin wrapper on top of the fantastic [Joi](https://github.com/hapijs/joi), mostly to provide simpler error handling and validator as middleware. If you know how to use Joi, than you'll feel right at home. Even if you don't, you're minutes away at pumping some awesome validation action.
 
+## Installation
+
+```
+$ npm install --save @sapphirejs/validator
+```
+
 ## Schema
 
 Schemas are plain object literals with the field name as the key and a set of chained functions to declare validation rules. Let's see an example:
