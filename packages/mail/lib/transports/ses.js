@@ -8,6 +8,13 @@ const aws = require('aws-sdk')
 */
 class SES {
   /**
+   * @param {Object} config
+   */
+  constructor(config) {
+    this._config = config
+  }
+
+  /**
    * Sends the message.
    *
    * @public
@@ -15,9 +22,9 @@ class SES {
    * @param {Object} message
    * @returns {Prommise}
    */
-  send(config, message) {
+  send(message) {
     const transport = nodemailer.createTransport({
-      SES: new aws.SES(config)
+      SES: new aws.SES(this._config)
     })
     return transport.sendMail(message)
   }

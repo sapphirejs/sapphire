@@ -47,7 +47,7 @@ class Mail {
     if (validationError)
       throw new MissingMailParams(validationError)
 
-    return this._transport.send(this._config, messageWithBody)
+    return this._transport.send(messageWithBody)
       .then(info => {
         return info
       })

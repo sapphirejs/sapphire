@@ -6,7 +6,7 @@ class MockTransport {
     this._shouldErr = shouldErr
   }
 
-  send(config, message) {
+  send(message) {
     return new Promise((resolve, reject) => {
       if (this._shouldErr) reject('error')
       // Transport isn't supposed to return the message
