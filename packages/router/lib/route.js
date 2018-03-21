@@ -1,4 +1,4 @@
-const is = require('./is')
+const { is } = require('@sapphirejs/commons')
 const settings = require('./settings')
 const errors = require('./errors/messages')
 const InvalidRouteArguments = require('./errors/invalid-route-arguments')

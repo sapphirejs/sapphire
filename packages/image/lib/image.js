@@ -11,7 +11,7 @@ class Image {
    * @returns {Promise}
    * @throws {MissingProcessor} when callback is missing
    */
-  open(path, cb) {
+  async open(path, cb) {
     if (!cb || typeof cb !== 'function')
       throw new MissingProcessor('Image expects a callback to process images.')
 
@@ -28,7 +28,7 @@ class Image {
    * @returns {Promise}
    * @throws {MissingProcessor} when callback is missing
    */
-  create(options, cb) {
+  async create(options, cb) {
     if (!cb || typeof cb !== 'function')
       throw new MissingProcessor('Image expects a callback to process images.')
 

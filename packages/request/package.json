@@ -1,13 +1,13 @@
 {
-  "name": "@sapphirejs/commons",
-  "version": "0.0.12",
-  "description": "Common utilities that are used throughout Sapphire packages",
+  "name": "@sapphirejs/request",
+  "version": "0.0.14",
+  "description": "A Request Wrapper for Sapphire Framework",
   "license": "MIT",
-  "author": "Aleksander Koko <aleksanderkoko@gmail>",
+  "author": "Fadion Dashi <jonidashi@gmail.com>",
   "keywords": [
+    "request",
     "sapphire",
-    "framework",
-    "commons"
+    "framework"
   ],
   "main": "index.js",
   "engines": {

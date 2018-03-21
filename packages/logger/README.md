@@ -4,6 +4,10 @@ An initializer for [Winston](https://github.com/winstonjs/winston). It doesn't a
 
 ## Usage
 
+```
+$ npm install --save @sapphirejs/logger
+```
+
 ```javascript
 const { Logger, Transport } = require('@sapphirejs/logger')
 

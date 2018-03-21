@@ -1,14 +1,13 @@
 {
-  "name": "@sapphirejs/logger",
-  "version": "0.0.14",
-  "description": "Logger for Sapphire Framework",
+  "name": "@sapphirejs/common",
+  "version": "0.0.13",
+  "description": "Common utilities that are used throughout Sapphire packages",
   "license": "MIT",
-  "author": "Fadion Dashi <jonidashi@gmail.com>",
+  "author": "Aleksander Koko <aleksanderkoko@gmail>",
   "keywords": [
-    "logger",
-    "log",
     "sapphire",
-    "framework"
+    "framework",
+    "commons"
   ],
   "main": "index.js",
   "engines": {
@@ -22,8 +21,8 @@
     "lint": "eslint ./src",
     "test-ci": "jest --coverage && cat ./coverage/lcov.info | coveralls"
   },
-  "dependencies": {
-    "winston": "^3.0.0-rc1",
-    "winston-daily-rotate-file": "^2.0.0-rc.2"
+  "devDependencies": {
+    "coveralls": "^3.0.0",
+    "jest": "^22.0.4"
   }
 }

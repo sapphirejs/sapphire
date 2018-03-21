@@ -22,6 +22,10 @@ let locales = {
 
 ## Usage
 
+```
+$ npm install --save @sapphirejs/intl
+```
+
 For the simplest and probably most typical case, you may have a greeting message in your website:
 
 ```javascript

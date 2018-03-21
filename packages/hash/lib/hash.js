@@ -18,7 +18,7 @@ class Hash {
    * @param {string} plain
    * @returns {string}
    */
-  generate(word) {
+  async generate(word) {
     return this._algorithm.generate(word)
   }
 
@@ -29,7 +29,7 @@ class Hash {
    * @param {string} hash
    * @returns {boolean}
    */
-  compare(plain, hash) {
+  async compare(plain, hash) {
     return this._algorithm.compare(plain, hash)
   }
 }

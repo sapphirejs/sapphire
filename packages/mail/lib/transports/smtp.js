@@ -7,15 +7,21 @@ const nodemailer = require('nodemailer')
 */
 class SMTP {
   /**
+   * @param {Object} config
+   */
+  constructor(config) {
+    this._config = config
+  }
+
+  /**
    * Sends the message.
    *
    * @public
-   * @param {Object} config
    * @param {Object} message
    * @returns {Prommise}
    */
-  send(config, message) {
-    const transport = nodemailer.createTransport(config)
+  send(message) {
+    const transport = nodemailer.createTransport(this._config)
     return transport.sendMail(message)
   }
 }

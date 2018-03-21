@@ -1,6 +1,6 @@
 {
   "name": "@sapphirejs/intl",
-  "version": "0.0.12",
+  "version": "0.0.14",
   "description": "Internationalization for Sapphire Framework",
   "license": "MIT",
   "author": "Fadion Dashi <jonidashi@gmail.com>",

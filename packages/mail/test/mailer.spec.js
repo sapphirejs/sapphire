@@ -6,7 +6,7 @@ class MockTransport {
     this._shouldErr = shouldErr
   }
 
-  send(config, message) {
+  send(message) {
     return new Promise((resolve, reject) => {
       if (this._shouldErr) reject('error')
       // Transport isn't supposed to return the message
@@ -65,41 +65,32 @@ describe('message', () => {
 
 describe('mail', () => {
   test("sets 'from' and 'replyTo' headers from config", async () => {
-    expect.assertions(1)
-
     const mail = new Mail({ from: 'from@domain.com' }, new MockTransport())
-    const sent = mail.send('hello', (message) => message.to('to@domain.com'))
-    await expect(sent)
-      .resolves
-      .toMatchObject({
-        from: 'from@domain.com',
-        replyTo: 'from@domain.com'
-      })
+    const sent = await mail.send('hello', (message) => message.to('to@domain.com'))
+
+    expect(sent).toMatchObject({
+      from: 'from@domain.com',
+      replyTo: 'from@domain.com'
+    })
   })
 
   test("sets html body", async () => {
-    expect.assertions(1)
-
     const mail = new Mail({}, new MockTransport())
-    const sent = mail.send('hello', (message) => message.from('from@domain.com').to('to@domain.com'))
-    await expect(sent)
-      .resolves
-      .toMatchObject({
-        html: 'hello'
-      })
+    const sent = await mail.send('hello', (message) => message.from('from@domain.com').to('to@domain.com'))
+
+    expect(sent).toMatchObject({
+      html: 'hello'
+    })
   })
 
   test("sets html and text body", async () => {
-    expect.assertions(1)
-
     const mail = new Mail({}, new MockTransport())
-    const sent = mail.send({ html: '<p>Hello</p>', text: 'Hello' }, (message) => message.from('from@domain.com').to('to@domain.com'))
-    await expect(sent)
-      .resolves
-      .toMatchObject({
-        html: '<p>Hello</p>',
-        text: 'Hello'
-      })
+    const sent = await mail.send({ html: '<p>Hello</p>', text: 'Hello' }, (message) => message.from('from@domain.com').to('to@domain.com'))
+
+    expect(sent).toMatchObject({
+      html: '<p>Hello</p>',
+      text: 'Hello'
+    })
   })
 
   test('throws when transport is not provided', () => {
@@ -109,8 +100,6 @@ describe('mail', () => {
   })
 
   test('throws when callback in send() is missing', async () => {
-    expect.assertions(1)
-
     try {
       const mail = new Mail({}, new MockTransport())
       await mail.send('hello')
@@ -120,8 +109,6 @@ describe('mail', () => {
   })
 
   test('throws when callback in send() is not a valid function', async () => {
-    expect.assertions(1)
-
     try {
       const mail = new Mail({}, new MockTransport())
       await mail.send('hello', 'not.a.function')
@@ -131,8 +118,6 @@ describe('mail', () => {
   })
 
   test('throws when "from" header is missing', async () => {
-    expect.assertions(1)
-
     try {
       const mail = new Mail({}, new MockTransport())
       await mail.send('hello', (message) => message.to('to@domain.com'))
@@ -142,8 +127,6 @@ describe('mail', () => {
   })
 
   test('throws when "to" header is missing', async () => {
-    expect.assertions(1)
-
     try {
       const mail = new Mail({}, new MockTransport())
       await mail.send('hello', (message) => message.from('from@domain.com'))
@@ -153,8 +136,6 @@ describe('mail', () => {
   })
 
   test('throws when mail sending fails', async () => {
-    expect.assertions(1)
-
     try {
       const mail = new Mail({}, new MockTransport(true))
       await mail.send('hello', (message) => message.from('from@domain.com').to('to@domain.com'))

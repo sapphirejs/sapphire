@@ -4,13 +4,17 @@ A fluent email sender built as a thin wrapper on top of [nodemailer](https://git
 
 ## Usage
 
+```
+$ npm install --save @sapphirejs/mail
+```
+
 We'll start with an exhaustive example that includes pretty much every option.
 
 ```javascript
 const { Mail, Transport } = require('@sapphirejs/mail')
 
-const config = {/* nodemailer configuration */}
-const mail = new Mail(config, new Transport.SMTP())
+const config = { host: 'smtp.example.com' }
+const mail = new Mail({}, new Transport.SMTP(config))
 await mail.send('<p>Hi</p>', message => {
   message
     .from('from@domain.com')
@@ -36,10 +40,10 @@ await mail.send({ html: '<p>Hi</p>', text: 'Hi' }, /* rest of the message */)
 
 ### Global "from" Header
 
-When the "from" header is passed in the config, it will be automatically included in every mail instance. Off course it also be overriden with the `from` function.
+When the "from" header is passed as `Mail`'s config, it will be automatically included in every mail instance. Off course it also be overriden with the `from` function.
 
 ```javascript
-let config = { from: 'from@domain.com', /* other config options */ }
+const mail = new Mail({ from: 'from@domain.com' }, new Transport.SMTP(config))
 ```
 
 ### Name, Email Format
@@ -76,7 +80,7 @@ The same applies to `header`, `attachment`, and `alternative`.
 
 ```javascript
 try {
-  const mail = new Mail(config, new Transport.SMTP())
+  const mail = new Mail({}, new Transport.SMTP(config))
   const result = await mail
     .send('<p>Hello</p>', message => {
       message
@@ -104,7 +108,7 @@ const config = {
   }
 }
 
-const mail = new Mail(config, new Transport.SMTP())
+const mail = new Mail({}, new Transport.SMTP(config))
 ```
 
 ### SES Transport
@@ -118,5 +122,5 @@ const config = {{
   region: 'us-east-1'
 }
 
-const mail = new Mail(config, new Transport.SES())
+const mail = new Mail({}, new Transport.SES(config))
 ```

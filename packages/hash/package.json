@@ -1,6 +1,6 @@
 {
   "name": "@sapphirejs/hash",
-  "version": "0.0.12",
+  "version": "0.0.14",
   "description": "Hashing Package for Sapphire Framework",
   "license": "MIT",
   "author": "Fadion Dashi <jonidashi@gmail.com>",
