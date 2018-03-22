@@ -1,4 +1,4 @@
-const { is } = require('@sapphirejs/commons')
+const { is } = require('@sapphirejs/common')
 const settings = require('./settings')
 const errors = require('./errors/messages')
 const InvalidRouteArguments = require('./errors/invalid-route-arguments')
@@ -200,7 +200,7 @@ class Route {
     this._routes.push({
       type: settings.type.http,
       path: path,
-      middleware: middleware,
+      middleware: this._combineMiddleware(middleware),
       handler: callback,
       meta: {
         method: method
@@ -289,13 +289,22 @@ class Route {
    * @returns {null|array}
    */
   _combineMiddleware(first, second) {
-    if (!first && !second) return null
-    if (Array.isArray(first) && Array.isArray(second)) return [...first, ...second]
-    if (Array.isArray(first)) return [...first, second]
-    if (Array.isArray(second)) return [first, ...second]
-    if (!first) return [second]
-    if (!second) return [first]
-    return [first, second]
+    return this._flattenArray([first, second])
+      .filter(item => item)
+  }
+
+  /**
+   * Flattens a multidimensional array to
+   * a single dimesion.
+   *
+   * @private
+   * @param {array} array
+   * @returns {array}
+   */
+  _flattenArray(array) {
+    return array.reduce((acc, item) => {
+      return acc.concat(Array.isArray(item) ? this._flattenArray(item) : item)
+    }, [])
   }
 
   /**

@@ -5,7 +5,7 @@ const { UserController, CommentController, TaskController } = require('./helpers
 test('every http method', () => {
   const route = new Route()
   const cb = () => {}
-  
+
   route.get('/path', cb)
   route.post('/path', cb)
   route.put('/path', cb)
@@ -19,7 +19,7 @@ test('every http method', () => {
   expect(routes[0]).toMatchObject({
     type: settings.type.http,
     path: '/path',
-    middleware: null,
+    middleware: [],
     handler: cb,
     meta: {
       method: settings.method.get
@@ -29,7 +29,7 @@ test('every http method', () => {
   expect(routes[1]).toMatchObject({
     type: settings.type.http,
     path: '/path',
-    middleware: null,
+    middleware: [],
     handler: cb,
     meta: {
       method: settings.method.post
@@ -39,7 +39,7 @@ test('every http method', () => {
   expect(routes[2]).toMatchObject({
     type: settings.type.http,
     path: '/path',
-    middleware: null,
+    middleware: [],
     handler: cb,
     meta: {
       method: settings.method.put
@@ -49,7 +49,7 @@ test('every http method', () => {
   expect(routes[3]).toMatchObject({
     type: settings.type.http,
     path: '/path',
-    middleware: null,
+    middleware: [],
     handler: cb,
     meta: {
       method: settings.method.patch
@@ -59,7 +59,7 @@ test('every http method', () => {
   expect(routes[4]).toMatchObject({
     type: settings.type.http,
     path: '/path',
-    middleware: null,
+    middleware: [],
     handler: cb,
     meta: {
       method: settings.method.delete
@@ -77,7 +77,7 @@ test('http route with only a callback', () => {
 
   expect(routes.length).toBe(1)
   expect(routes[0].handler).toEqual(cb)
-  expect(routes[0].middleware).toBeNull()
+  expect(routes[0].middleware).toEqual([])
 })
 
 test('http route with middleware and callback', () => {
@@ -88,8 +88,8 @@ test('http route with middleware and callback', () => {
   route.get('/path', mw, cb)
 
   const routes = route.export()
-  
-  expect(routes[0].middleware).toEqual(mw)
+
+  expect(routes[0].middleware).toEqual([mw])
   expect(routes[0].handler).toEqual(cb)
 })
 
@@ -152,7 +152,7 @@ test('http group', () => {
   expect(routes[0]).toMatchObject({
     type: settings.type.http,
     path: '/path/hi',
-    middleware: null,
+    middleware: [],
     handler: cb,
     meta: {
       method: settings.method.get
@@ -162,7 +162,7 @@ test('http group', () => {
   expect(routes[1]).toMatchObject({
     type: settings.type.http,
     path: '/path/hey',
-    middleware: null,
+    middleware: [],
     handler: cb,
     meta: {
       method: settings.method.post
@@ -170,7 +170,7 @@ test('http group', () => {
   })
 })
 
-test('http group combines middleware', () => {
+test('http group combines both middleware', () => {
   const route = new Route()
   const cb = () => {}
   const mw = () => {}
@@ -187,7 +187,7 @@ test('http group combines middleware', () => {
   expect(routes[1].middleware).toEqual([mwGroup, mw, mw])
 })
 
-test('http group combines array middleware', () => {
+test('http group combines both array middleware', () => {
   const route = new Route()
   const cb = () => {}
   const mw = () => {}
@@ -202,6 +202,22 @@ test('http group combines array middleware', () => {
 
   expect(routes[0].middleware).toEqual([mwGroup, mwGroup, mw])
   expect(routes[1].middleware).toEqual([mwGroup, mwGroup, mw, mw])
+})
+
+test('http group combines only routes middleware', () => {
+  const route = new Route()
+  const cb = () => {}
+  const mw = () => {}
+
+  route.group('/path', (route) => {
+    route.get('/hi', mw, cb)
+    route.get('/hi', [mw, mw], cb)
+  })
+
+  const routes = route.export()
+
+  expect(routes[0].middleware).toEqual([mw])
+  expect(routes[1].middleware).toEqual([mw, mw])
 })
 
 test('empty http group does not build routes', () => {
@@ -256,7 +272,7 @@ test('http resource', () => {
     {
       type: settings.type.http,
       path: '/users',
-      middleware: null,
+      middleware: [],
       handler: controller.index,
       meta: {
         method: settings.method.get
@@ -265,7 +281,7 @@ test('http resource', () => {
     {
       type: settings.type.http,
       path: '/users/:id/edit',
-      middleware: null,
+      middleware: [],
       handler: controller.edit,
       meta: {
         method: settings.method.get
@@ -274,7 +290,7 @@ test('http resource', () => {
     {
       type: settings.type.http,
       path: '/users/new',
-      middleware: null,
+      middleware: [],
       handler: controller.store,
       meta: {
         method: settings.method.get
@@ -283,7 +299,7 @@ test('http resource', () => {
     {
       type: settings.type.http,
       path: '/users/:id',
-      middleware: null,
+      middleware: [],
       handler: controller.show,
       meta: {
         method: settings.method.get
@@ -292,7 +308,7 @@ test('http resource', () => {
     {
       type: settings.type.http,
       path: '/users',
-      middleware: null,
+      middleware: [],
       handler: controller.create,
       meta: {
         method: settings.method.post
@@ -301,7 +317,7 @@ test('http resource', () => {
     {
       type: settings.type.http,
       path: '/users/:id',
-      middleware: null,
+      middleware: [],
       handler: controller.update,
       meta: {
         method: settings.method.put
@@ -310,7 +326,7 @@ test('http resource', () => {
     {
       type: settings.type.http,
       path: '/users/:id',
-      middleware: null,
+      middleware: [],
       handler: controller.destroy,
       meta: {
         method: settings.method.delete
@@ -328,7 +344,7 @@ test('http resource with middleware', () => {
 
   const routes = route.export()
 
-  expect(routes[0].middleware).toEqual(mw)
+  expect(routes[0].middleware).toEqual([mw])
 })
 
 test('http resource with array of middleware', () => {
@@ -353,7 +369,7 @@ test('http resource with "only" option', () => {
     {
       type: settings.type.http,
       path: '/users',
-      middleware: null,
+      middleware: [],
       handler: controller.index,
       meta: {
         method: settings.method.get
@@ -362,7 +378,7 @@ test('http resource with "only" option', () => {
     {
       type: settings.type.http,
       path: '/users',
-      middleware: null,
+      middleware: [],
       handler: controller.create,
       meta: {
         method: settings.method.post
@@ -381,7 +397,7 @@ test('http resource with "except" option', () => {
     {
       type: settings.type.http,
       path: '/users/:id',
-      middleware: null,
+      middleware: [],
       handler: controller.update,
       meta: {
         method: settings.method.put
@@ -390,7 +406,7 @@ test('http resource with "except" option', () => {
     {
       type: settings.type.http,
       path: '/users/:id',
-      middleware: null,
+      middleware: [],
       handler: controller.destroy,
       meta: {
         method: settings.method.delete
@@ -420,7 +436,7 @@ test('nested http resource', () => {
     {
       type: settings.type.http,
       path: '/users',
-      middleware: null,
+      middleware: [],
       handler: userController.index,
       meta: {
         method: settings.method.get
@@ -429,7 +445,7 @@ test('nested http resource', () => {
     {
       type: settings.type.http,
       path: '/users/comments/:id',
-      middleware: null,
+      middleware: [],
       handler: commentController.update,
       meta: {
         method: settings.method.put
