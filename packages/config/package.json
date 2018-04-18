@@ -1,6 +1,6 @@
 {
   "name": "@sapphirejs/config",
-  "version": "0.0.14",
+  "version": "0.0.15",
   "description": "Config Reader for Sapphire Framework",
   "license": "MIT",
   "author": "Aleksander Koko <aleksanderkoko@gmail.com>",

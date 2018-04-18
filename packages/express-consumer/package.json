@@ -1,6 +1,6 @@
 {
   "name": "@sapphirejs/express-consumer",
-  "version": "0.0.11",
+  "version": "0.0.15",
   "description": "A consumer package for @sapphire/router that uses express to build a server",
   "license": "MIT",
   "author": "Aleksander Koko <aleksanderkoko@gmail.com>",
@@ -23,10 +23,10 @@
     "test-ci": "jest --coverage && cat ./coverage/lcov.info | coveralls"
   },
   "dependencies": {
-    "@sapphirejs/router": "0.0.12",
+    "@sapphirejs/container": "^0.0.15",
     "@sapphirejs/request": "0.0.14",
     "@sapphirejs/response": "0.0.12",
-    "@sapphirejs/container": "0.0.14",
+    "@sapphirejs/router": "0.0.12",
     "cors": "^2.8.4",
     "express": "^4.16.3",
     "is": "^3.2.1"

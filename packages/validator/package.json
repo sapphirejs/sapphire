@@ -1,6 +1,6 @@
 {
   "name": "@sapphirejs/validator",
-  "version": "0.0.14",
+  "version": "0.0.15",
   "description": "Schema and Middleware Validator for Sapphire Framework",
   "license": "MIT",
   "author": "Fadion Dashi <jonidashi@gmail.com>",
@@ -24,7 +24,7 @@
     "test-ci": "jest --coverage && cat ./coverage/lcov.info | coveralls"
   },
   "dependencies": {
-    "@sapphirejs/config": "^0.0.14",
+    "@sapphirejs/config": "^0.0.15",
     "joi": "^13.1.2"
   },
   "devDependencies": {
