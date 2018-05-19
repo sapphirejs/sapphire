@@ -1,6 +1,6 @@
 {
   "name": "@sapphirejs/logger",
-  "version": "0.0.14",
+  "version": "0.0.16",
   "description": "Logger for Sapphire Framework",
   "license": "MIT",
   "author": "Fadion Dashi <jonidashi@gmail.com>",
@@ -23,7 +23,7 @@
     "test-ci": "jest --coverage && cat ./coverage/lcov.info | coveralls"
   },
   "dependencies": {
-    "winston": "^3.0.0-rc1",
+    "winston": "^3.0.0-rc5",
     "winston-daily-rotate-file": "^2.0.0-rc.2"
   }
 }
