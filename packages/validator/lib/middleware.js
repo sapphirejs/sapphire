@@ -1,4 +1,5 @@
 const Validator = require('./validator')
+const ValidationError = require('./errors/validation-error')
 
 /**
  * Middleware class.
@@ -15,8 +16,8 @@ class Middleware {
   }
 
   /**
-   * Express middleware that runs the validator and
-   * injects it as an instance.
+   * Express middleware that runs the validator throws if
+   * it fails.
    *
    * @public
    * @param {Object} req
@@ -24,8 +25,13 @@ class Middleware {
    * @param {Function} next
    */
   middleware(req, res, next) {
-    req.validator = new Validator(this.fields(req), this.rules())
-    next()
+    const validator = new Validator(this.fields(req), this.rules())
+
+    if (validator.fails) {
+      throw new ValidationError(validator.errors)
+    } else {
+      next()
+    }
   }
 
   /**
