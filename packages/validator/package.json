@@ -1,6 +1,6 @@
 {
   "name": "@sapphirejs/validator",
-  "version": "0.0.15",
+  "version": "0.0.17",
   "description": "Schema and Middleware Validator for Sapphire Framework",
   "license": "MIT",
   "author": "Fadion Dashi <jonidashi@gmail.com>",
